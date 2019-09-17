@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2018/08/01/centos_install_mongodb/">
+    
+    
+    <title>centos7 安装配置mongodb 4.0 | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="mongodb">
+    <meta name="description" content="环境说明: centos7.5 安装mongodb 4.0的社区版安装后添加用户和配置权限">
+<meta name="keywords" content="mongodb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos7 安装配置mongodb 4.0">
+<meta property="og:url" content="https://zeroto.one/2018/08/01/centos_install_mongodb/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="环境说明: centos7.5 安装mongodb 4.0的社区版安装后添加用户和配置权限">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="centos7 安装配置mongodb 4.0">
+<meta name="twitter:description" content="环境说明: centos7.5 安装mongodb 4.0的社区版安装后添加用户和配置权限">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">centos7 安装配置mongodb 4.0</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">centos7 安装配置mongodb 4.0</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-01T00:13:00.000Z" itemprop="datePublished" class="page-time">
+  2018-08-01
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#一、准备工作"><span class="post-toc-text">一、准备工作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二、安装MongoDB"><span class="post-toc-text">二、安装MongoDB</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-添加-MongoDB-yum-源"><span class="post-toc-text">1.添加 MongoDB yum 源</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-安装mongodb"><span class="post-toc-text">2.安装mongodb:</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#三、设置"><span class="post-toc-text">三、设置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-添加用户"><span class="post-toc-text">1. 添加用户</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-关闭巨型页"><span class="post-toc-text">2. 关闭巨型页</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-打开-MongoDB-权限认证"><span class="post-toc-text">3. 打开 MongoDB 权限认证</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#四、常用命令"><span class="post-toc-text">四、常用命令</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-centos_install_mongodb" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">centos7 安装配置mongodb 4.0</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-01 08:13:00" datetime="2018-08-01T00:13:00.000Z" itemprop="datePublished">2018-08-01</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>环境说明</strong>: centos7.5 安装mongodb 4.0的社区版<br>安装后添加用户和配置权限</p>
+<a id="more"></a>
+<h1 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h1><p>关闭 SELinux<br>部分CentOS 可能不存在selinux文件，可以跳过这步。</p>
+<pre><code>sudo vim /etc/sysconfig/selinux
+sudo yum install vim #如果 vim 指令未安装，那就安装它
+</code></pre><p>找到 SELINUX 然后修改成 disabled.</p>
+<pre><code>SELINUX = disabled
+</code></pre><h1 id="二、安装MongoDB"><a href="#二、安装MongoDB" class="headerlink" title="二、安装MongoDB"></a>二、安装MongoDB</h1><h2 id="1-添加-MongoDB-yum-源"><a href="#1-添加-MongoDB-yum-源" class="headerlink" title="1.添加 MongoDB yum 源"></a>1.添加 MongoDB yum 源</h2><pre><code>sudo vim /etc/yum.repos.d/mongodb-org-4.0.repo
+</code></pre><p>然后添加以下内容</p>
+<pre><code>[mongodb-org-4.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
+</code></pre><h2 id="2-安装mongodb"><a href="#2-安装mongodb" class="headerlink" title="2.安装mongodb:"></a>2.安装mongodb:</h2><pre><code>sudo yum install -y mongodb-org
+</code></pre><p>可以指定MongoDB版本。然而，yum会在新版本可用时升级软件包。如果不想意外升级，可固定软件包，将以下exclude指令添加到/etc/yum.conf文件中：</p>
+<pre><code>exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools
+</code></pre><p>添加mongodb开机启动</p>
+<pre><code>sudo systemctl enable mongod
+sudo systemctl start mongod
+sudo systemctl status mongod
+</code></pre><h1 id="三、设置"><a href="#三、设置" class="headerlink" title="三、设置"></a>三、设置</h1><h2 id="1-添加用户"><a href="#1-添加用户" class="headerlink" title="1. 添加用户"></a>1. 添加用户</h2><p><strong>(1). 超级管理员账号创建</strong></p>
+<p>先登录<code>sudo mongo</code></p>
+<p>登录后，使用admin数据库(超级管理员账号必须创建在该数据库上)<br><code>use admin</code><br>创建超级用户</p>
+<pre><code>db.createUser({&quot;user&quot;:&quot;用户名&quot;,&quot;pwd&quot;:&quot;密码&quot;,&quot;roles&quot;:[&quot;root&quot;]})
+</code></pre><p><strong>(2). 普通用户账号创建</strong></p>
+<p><strong>方式一</strong>: 在当前使用的数据库上创建普通用户<br>选择需要创建用户的数据库，例如<br><code>use test</code><br>创建普通用户</p>
+<pre><code>db.createUser(&quot;user&quot;:&quot;user1&quot;, &quot;pwd&quot;:&quot;pwd1&quot;, roles:[&quot;read&quot;])
+创建普通用户user1,该用户在test上的权限是只读
+db.createUser(&quot;user&quot;:&quot;user1&quot;, &quot;pwd&quot;:&quot;pwd1&quot;, roles:[&quot;readWrite&quot;])
+创建普通用户user1,该用户在test上的权限是读写
+</code></pre><p><strong>方式二</strong>: 在admin数据库上创建普通用户<br>一次性赋予用户多个数据库的权限</p>
+<pre><code>use admin
+db.createUser({&quot;user&quot;:&quot;python1&quot;, &quot;pwd&quot;:&quot;python1&quot;, roles:[{&quot;role&quot;:&quot;read&quot;,&quot;db&quot;:&quot;dbname1&quot;},{&quot;role&quot;:&quot;readWrite&quot;,&quot;db&quot;:&quot;dbname2&quot;}
+]})
+</code></pre><p><strong>(3). 查看创建的用户</strong><br><code>show users</code></p>
+<p><strong>(4). 删除用户</strong><br>先use该数据库然后:</p>
+<pre><code>db.dropUser(&#39;用户名&#39;)
+</code></pre><h2 id="2-关闭巨型页"><a href="#2-关闭巨型页" class="headerlink" title="2. 关闭巨型页"></a>2. 关闭巨型页</h2><p>安装完成后，为了消除 MongoDB 的性能警告，需要关闭 Linux 巨型页(4.0版本开启权限认证后没有该提示)：<br>Linux 巨型页的介绍: <a href="https://github.com/gatieme/LDD-LinuxDeviceDrivers/tree/master/study/kernel/02-memory/04-buddy/03-fragmentation" target="_blank" rel="noopener">伙伴系统之避免碎片</a></p>
+<pre><code>$ echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
+$ echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag
+</code></pre><h2 id="3-打开-MongoDB-权限认证"><a href="#3-打开-MongoDB-权限认证" class="headerlink" title="3. 打开 MongoDB 权限认证"></a>3. 打开 MongoDB 权限认证</h2><p>先添加了用户再设置开启权限<br>权限问题:<a href="https://coolshell.cn/articles/17607.html" target="_blank" rel="noopener">从 MONGODB “赎金事件” 看安全问题</a></p>
+<p><strong>(1). MongoDB 4.0版本权限设置:</strong><br>执行 sudo vim /etc/mongod.conf，找到 security: 这一行，取消注释并改为：</p>
+<pre><code>security:
+   authorization: enabled
+</code></pre><p>然后重启 MongoDB</p>
+<pre><code>sudo systemctl restart mongod
+</code></pre><p><strong>(2). MongoDB旧版3.x  权限设置:</strong><br>两种方式，一种是mongodb启动时加入–auth参数，另一种是修改配置文件。<br>在配置文件（默认是/etc/mongodb.conf或mongo.conf或mongod.conf）最后加入</p>
+<pre><code>auth=true
+</code></pre><p>然后重启MongoDB</p>
+<p><strong>(3). 打开权限认证后的登录方法</strong><br>未认证没有操作权限<br><strong>方式一</strong>:<br>使用auth方法认证，例如：</p>
+<pre><code>&gt; use admin
+switched to db admin
+&gt; db.auth(&#39;用户名&#39;, &#39;密码&#39;)
+1
+</code></pre><p>创建在admin数据库上的用户，必须来到admin数据库上进行认证。返回1表示认证通过，返回0表示认证失败。</p>
+<p>其它用户进入其它数据库也是执行auth方法: db.auth(‘用户名’, ‘密码’)</p>
+<p><strong>方式二</strong>:<br>在登录mongo客户端时指定用户名和密码，如下：</p>
+<pre><code>mongo -u 用户名 -p 密码 --authenticationDatabase 数据库名
+</code></pre><h1 id="四、常用命令"><a href="#四、常用命令" class="headerlink" title="四、常用命令"></a>四、常用命令</h1><pre><code># 查看mongo安装位置
+whereis mongod
+
+# 查看修改配置文件
+sudo vim /etc/mongod.conf
+
+# 启动mongodb
+sudo systemctl start mongod.service
+# 或者
+sudo service mongod start
+
+# 重新启动mongodb
+sudo systemctl restart mongod.service
+# 或者
+sudo service mongod restart
+
+# 停止mongodb
+sudo systemctl stop mongod.service
+# 或者
+sudo service mongod stop
+
+# 查看mongodb的状态
+systemctl status mongod.service
+# 或者
+service mongod status
+
+# mongo登录
+sudo mongo
+
+# 查看数据库
+show dbs
+</code></pre><p><strong>参考资料来源</strong>:</p>
+<blockquote>
+<p><a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/" target="_blank" rel="noopener">mongodb官方教程</a><br><a href="https://www.kancloud.cn/a632079/nodebb-cn/372108" target="_blank" rel="noopener">NodeBB 文档 CentOS &amp; MongoDB 安装</a><br><a href="https://blog.csdn.net/liang_henry/article/details/79582766" target="_blank" rel="noopener">第三方教程 CentOS 7 安装 MongoDB 3.6</a></p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2018/08/01/centos_install_mongodb/" target="_blank" rel="external">https://zeroto.one/2018/08/01/centos_install_mongodb/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongodb/">mongodb</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/08/11/linux_and_windows_boot_setting/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">linux和windows双系统引导设置</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/30/Vagrant_debug/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Vagrant 解决Bug记录</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>

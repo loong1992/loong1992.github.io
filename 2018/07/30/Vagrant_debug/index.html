@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2018/07/30/Vagrant_debug/">
+    
+    
+    <title>Vagrant 解决Bug记录 | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="vagrant">
+    <meta name="description" content="环境: 主机windows10下virtualbox和Vagrant软件，客户机centos7">
+<meta name="keywords" content="vagrant">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vagrant 解决Bug记录">
+<meta property="og:url" content="https://zeroto.one/2018/07/30/Vagrant_debug/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="环境: 主机windows10下virtualbox和Vagrant软件，客户机centos7">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vagrant 解决Bug记录">
+<meta name="twitter:description" content="环境: 主机windows10下virtualbox和Vagrant软件，客户机centos7">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Vagrant 解决Bug记录</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vagrant 解决Bug记录</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-30T04:03:00.000Z" itemprop="datePublished" class="page-time">
+  2018-07-30
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BUG1-vagrant-up-时每次都要手动输入网卡序号才能继续"><span class="post-toc-text">BUG1:vagrant up 时每次都要手动输入网卡序号才能继续</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BUG2-共享目录文件无法即时同步："><span class="post-toc-text">BUG2:共享目录文件无法即时同步：</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BUG3-无法双向同步："><span class="post-toc-text">BUG3:无法双向同步：</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-Vagrant_debug" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vagrant 解决Bug记录</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-30 12:03:00" datetime="2018-07-30T04:03:00.000Z" itemprop="datePublished">2018-07-30</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>环境</strong>: 主机windows10下virtualbox和Vagrant软件，客户机centos7</p>
+<a id="more"></a>
+<h2 id="BUG1-vagrant-up-时每次都要手动输入网卡序号才能继续"><a href="#BUG1-vagrant-up-时每次都要手动输入网卡序号才能继续" class="headerlink" title="BUG1:vagrant up 时每次都要手动输入网卡序号才能继续"></a>BUG1:vagrant up 时每次都要手动输入网卡序号才能继续</h2><pre><code>#  ==&gt; default: Available bridged network interfaces:
+# 1) Qualcomm Atheros AR8151 PCI-E Gigabit Ethernet Controller (NDIS 6.30)
+# 2) Hyper-V Virtual Ethernet Adapter
+which interface should the network bridge to ?
+</code></pre><p>解决方法:<br>方法一: 禁用其中之一的网卡，或者<br>方法二: 在配置文件里加入bridge: “对应网卡名”例如以下</p>
+<pre><code>config.vm.network &quot;public_network&quot;, bridge: &quot;Qualcomm Atheros AR8151 PCI-E Gigabit Ethernet Controller (NDIS 6.30)&quot;
+</code></pre><h2 id="BUG2-共享目录文件无法即时同步："><a href="#BUG2-共享目录文件无法即时同步：" class="headerlink" title="BUG2:共享目录文件无法即时同步："></a>BUG2:共享目录文件无法即时同步：</h2><p>先启动，然后在客户端项目文件夹里输入</p>
+<pre><code>vagrant rsync-auto
+</code></pre><p>即可从主机<strong>单向</strong>同步到客户机</p>
+<h2 id="BUG3-无法双向同步："><a href="#BUG3-无法双向同步：" class="headerlink" title="BUG3:无法双向同步："></a>BUG3:无法双向同步：</h2><p>是没有安装guest additions (需要cmd或bash命令行翻墙才能安装)</p>
+<p>信息如下:</p>
+<pre><code>==&gt; default: Checking for guest additions in VM...
+    default: No guest additions were detected on the base box for this VM! Guest
+    default: additions are required for forwarded ports, shared folders, host only
+    default: networking, and more. If SSH fails on this machine, please install
+    default: the guest additions and repackage the box to continue.
+    default:
+    default: This is not an error message; everything may continue to work properly,
+    default: in which case you may ignore this message.
+==&gt; default: Setting hostname...
+==&gt; default: Configuring and enabling network interfaces...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+==&gt; default: Rsyncing folder: /cygdrive/d/vbox_os_project/centos7_box/ =&gt; /vagrant
+==&gt; default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+==&gt; default: flag to force provisioning. Provisioners marked to run always will still run.
+</code></pre><ul>
+<li>安装插件<br>参考链接：<a href="https://www.jianshu.com/p/e28b79afc2f5" target="_blank" rel="noopener">https://www.jianshu.com/p/e28b79afc2f5</a><pre><code class="bash">vagrant plugin install vagrant-vbguest
+</code></pre>
+</li>
+<li>Vagrantfile 配置共享目录，挂载位置不能使用 /vagrant<pre><code>Vagrant.configure(&quot;2&quot;) do |config|
+config.vm.synced_folder &quot;.&quot;, &quot;/share&quot;
+end
+</code></pre></li>
+<li><p>启动过程会自动联网安装 Virtualbox Guest Additions，并在客户机上安装必要的依赖包，启动后配置的共享目录可以双向读写</p>
+</li>
+<li><p>每次启动虚机都会检查vbguest插件的更新，如果不想更新，修改Vgrantfilew文件，加上这样一条：</p>
+<pre><code>config.vbguest.auto_update = false
+</code></pre></li>
+<li>禁用默认的/vagrant共享目录<pre><code>config.vm.synced_folder &quot;.&quot;,&quot;/vagrant&quot;,disabled:true
+</code></pre></li>
+</ul>
+<p><strong>注</strong>:我这边测试没新建非默认同步目录的话，不能双向同步（建完同步目录，最好禁用默认/vagrant共享目录）</p>
+<p>方法二:使用GoodSync实现文件双向实时同步(收费软件)<br><a href="https://blog.qxzzf.com/archives/235/" target="_blank" rel="noopener">https://blog.qxzzf.com/archives/235/</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2018/07/30/Vagrant_debug/" target="_blank" rel="external">https://zeroto.one/2018/07/30/Vagrant_debug/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vagrant/">vagrant</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/08/01/centos_install_mongodb/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">centos7 安装配置mongodb 4.0</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/17/CentOS7_Install_Docker/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">CentOS 7 安装配置Docker CE</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>

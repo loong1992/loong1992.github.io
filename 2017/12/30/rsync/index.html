@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2017/12/30/rsync/">
+    
+    
+    <title>同步软件rsync安装配置 | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="rsync,同步软件">
+    <meta name="description" content="简介：rsync为一个同步软件。rsync的linux版名称rsync，windows版名称cwRsync。有服务器端和客户机端之分。服务器端需时刻启动相关服务，以等待客户端的同步命令。如果要定时同步windows下文件到linux下（拉取方式）。可只安装windows服务器端，linux客户端，linux客户端设置定时任务。">
+<meta name="keywords" content="rsync,同步软件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同步软件rsync安装配置">
+<meta property="og:url" content="https://zeroto.one/2017/12/30/rsync/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="简介：rsync为一个同步软件。rsync的linux版名称rsync，windows版名称cwRsync。有服务器端和客户机端之分。服务器端需时刻启动相关服务，以等待客户端的同步命令。如果要定时同步windows下文件到linux下（拉取方式）。可只安装windows服务器端，linux客户端，linux客户端设置定时任务。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.imgur.com/ilas6ZU.png">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="同步软件rsync安装配置">
+<meta name="twitter:description" content="简介：rsync为一个同步软件。rsync的linux版名称rsync，windows版名称cwRsync。有服务器端和客户机端之分。服务器端需时刻启动相关服务，以等待客户端的同步命令。如果要定时同步windows下文件到linux下（拉取方式）。可只安装windows服务器端，linux客户端，linux客户端设置定时任务。">
+<meta name="twitter:image" content="https://i.imgur.com/ilas6ZU.png">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">同步软件rsync安装配置</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">同步软件rsync安装配置</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-12-30T09:00:00.000Z" itemprop="datePublished" class="page-time">
+  2017-12-30
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#一、windows下安装rsync服务器端"><span class="post-toc-text">一、windows下安装rsync服务器端</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑴安装cwRsync"><span class="post-toc-text">⑴安装cwRsync</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑵修改配置文件"><span class="post-toc-text">⑵修改配置文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑶测试"><span class="post-toc-text">⑶测试</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二、linux下安装rsync"><span class="post-toc-text">二、linux下安装rsync</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑴安装rsync"><span class="post-toc-text">⑴安装rsync</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑵linux下客户端配置"><span class="post-toc-text">⑵linux下客户端配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑶linux下服务器端配置"><span class="post-toc-text">⑶linux下服务器端配置</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#三、系统相关设定"><span class="post-toc-text">三、系统相关设定</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#四、rsync同步命令"><span class="post-toc-text">四、rsync同步命令</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑴本机文件同步"><span class="post-toc-text">⑴本机文件同步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑵daemon方式远程同步"><span class="post-toc-text">⑵daemon方式远程同步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#⑶非daemon方式远程同步"><span class="post-toc-text">⑶非daemon方式远程同步</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-rsync" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">同步软件rsync安装配置</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-12-30 17:00:00" datetime="2017-12-30T09:00:00.000Z" itemprop="datePublished">2017-12-30</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>简介</strong>：rsync为一个同步软件。rsync的linux版名称rsync，windows版名称cwRsync。有服务器端和客户机端之分。服务器端需时刻启动相关服务，以等待客户端的同步命令。<br>如果要定时同步windows下文件到linux下（拉取方式）。可只安装windows服务器端，linux客户端，linux客户端设置定时任务。</p>
+<a id="more"></a>
+<h1 id="一、windows下安装rsync服务器端"><a href="#一、windows下安装rsync服务器端" class="headerlink" title="一、windows下安装rsync服务器端"></a>一、windows下安装rsync服务器端</h1><h2 id="⑴安装cwRsync"><a href="#⑴安装cwRsync" class="headerlink" title="⑴安装cwRsync"></a>⑴安装cwRsync</h2><p>下载cwRsyncServer_4.1.0_Installer.exe<br>cwRsyncServer下载完毕后，进行安装即可。其中有一点需要注意，就是在安装的过程中，会提示要输入cwRsyncServer在系统中新建用户的用户名及密码（能用该账户登录系统），也可以输入已有用户的用户名和密码。</p>
+<p>如果想要随时使用相关命令，可把目前cwRsync所在的bin路径加入到系统的环境变量中。（我的电脑–右键属性–高级系统设置–环境变量–系统变量）找到path，点击编辑在最后面加上路径,例如      <code>;C:\ICW\bin</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.imgur.com/ilas6ZU.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="⑵修改配置文件"><a href="#⑵修改配置文件" class="headerlink" title="⑵修改配置文件"></a>⑵修改配置文件</h2><p>windows下rsync服务器端配置文件</p>
+<pre><code>uid = 0
+gid = 0
+use chroot = false
+strict modes = false
+log file = rsyncd.log
+[backup]
+path = /cygdrive/c/web/
+ignore errors
+read only = yes
+list = no
+hosts allow = 192.168.213.0/255.255.255.0
+auth users = synctest
+secrets file = /cygdrive/c/ICW/rsyncd.password
+</code></pre><p>配置解析<br>上述配置文件/cygdrive/c代表c:/   其余设定跟linux下一样。开关选项使用（yes/no)。<br>上述[backup]为模块名，配置文件可以写入多个模块。<br>auth users 为同步时输入的用户，只与密码文件(secrets file)里设置的用户有关，与系统用户无关。<br>path后接要同步的目录，<br>hosts allow后修改为对应允许同步的主机或ip段，设为  *  表示允许所有主机。<br>read only为只读模式，如果想同步目录可写，请设为no。</p>
+<p>配置文件rsyncd.conf修改完毕后，我们来创建backup模块的同步文件夹，上述配置文件是设为c:/web/</p>
+<p>注意：同步文件夹创建完毕后，一定要把我们在前面安装rsyncserver时创建的用户，对该文件夹具有完全所有权。选择该文件夹–右键属性–安全–选中该用户–勾选完全控制。</p>
+<p>同步文件夹创建完毕后，再创建同步时的密码文件,上述配置文件中密码文件是放在<code>c:/ICW/rsyncd.password</code>。内容如下：<br>用户名:密码 例如     <code>synctest:password</code>   </p>
+<p>注意：该文件创建完毕后，一定要使用chmod命令修改其权限。这个和Linux系统上是一样的。chmod命令在rsyncserver的bin目录下，我们可以直接使用（下面为用户SvcCWRSYNC ）</p>
+<pre><code>chmod 600 /cygdrive/c/ICW/rsyncd.password
+chown SvcCWRSYNC /cygdrive/c/ICW/rsyncd.password
+</code></pre><p>以上全部修改并配置完毕后，就可以在windows的服务（计算机–管理–服务）中看到rsync服务（RsyncServer)。把该服务设置为自动启动，并启动该服务。</p>
+<p>手动启动命令 , 在cmd里输入以下行，（–config后接配置文件）例：<br><code>rsync --daemon --ipv4 --config=/cygdrive/c/ICW/rsyncd.conf</code></p>
+<p>此后不用手动启动即可正常使用rsync服务端。</p>
+<h2 id="⑶测试"><a href="#⑶测试" class="headerlink" title="⑶测试"></a>⑶测试</h2><p>现在在另一台机器上检查是否可以正常连接（有装telnet的机器即可）<br>telnet  IP地址 端口号，命令如下<br><code>telnet 192.168.213.133 873</code><br>看到如下说明可以连接<br><code>@RSYNCD: 30.0</code></p>
+<h1 id="二、linux下安装rsync"><a href="#二、linux下安装rsync" class="headerlink" title="二、linux下安装rsync"></a>二、linux下安装rsync</h1><h2 id="⑴安装rsync"><a href="#⑴安装rsync" class="headerlink" title="⑴安装rsync"></a>⑴安装rsync</h2><p>linux下服务器端与客户端是同一个软件<br><code>yum -y install rsync</code><br>安装结束后，我们可以查看下rsync命令所在的目录以及rsync的帮助。如下：<br>which rsync<br>默认安装在<code>/usr/bin/rsync</code><br><code>rsync --help</code>  //查看帮助文档</p>
+<h2 id="⑵linux下客户端配置"><a href="#⑵linux下客户端配置" class="headerlink" title="⑵linux下客户端配置"></a>⑵linux下客户端配置</h2><p>客户端只需要配置一个密码文件即可。该密码文件中的密码要与rsync服务器上的密码文件中的密码对应，并且也要与rsync服务器<code>rsyncd.conf</code>配置文件中的认证模块中的用户匹配。<br><code>vi /etc/rsyncd.password</code><br>添加如下行，例密码test：<br>test<br>密码文件中，只需要写入密码即可，不需要用户名。（服务器端密码文件需要写入   用户名:密码）<br>密码文件创建完毕后，要把其权限设置为600，否则会在以后同步时提示验证出错。执行以下：<br><code>chmod 600 /etc/rsyncd.password</code></p>
+<h2 id="⑶linux下服务器端配置"><a href="#⑶linux下服务器端配置" class="headerlink" title="⑶linux下服务器端配置"></a>⑶linux下服务器端配置</h2><p>如不使用linux下rsync服务器端，请跳过<br>①设为开机启动<br>在centos下rsync默认以xinetd方式运行rsync服务。所以RPM方式安装rsync的话，我们只需启动xinet服务即可。<br><code>vi /etc/xinetd.d/rsync</code><br>修改为以下行，保存退出</p>
+<pre><code>disable = no
+flags           = IPv4
+server_args     = --daemon --/etc/rsyncd.conf
+</code></pre><p>如无法使用ipv6则上述一定要设为IPv4方式，否则会出错</p>
+<p>配置完毕后，我们还需要安装xinetd软件包，否则无法启动xinetd服务。如下：<br><code>yum -y install xinetd</code><br>服务器端启动命令<br><code>/etc/init.d/xinetd start</code><br>关闭rsync服务<br><code>/etc/init.d/xinetd stop</code><br>设为开机启动<br><code>chkconfig xinetd on</code><br>查看端口是否开启，是使用ipv6方式还是ipv4方式<br><code>netstat -tunlp |grep :873</code></p>
+<p>②linux下rsync服务器端配置文件<br>服务器端需要启动服务，才能随时以daemon认证方式同步文件。客户端可以接收文件时才启动。</p>
+<p><strong> 1、修改rsync配置文件 </strong></p>
+<p><code>vi /etc/rsyncd.conf</code><br>Linux服务端实际配置文件如下</p>
+<pre><code>uid = root
+gid = root
+user chroot = no
+max connections = 200
+timeout = 600
+pid file = /var/run/rsyncd.pid
+lock file = /var/run/rsyncd.lock
+log file = /var/run/rsyncd.log
+[backup]
+path = /home/rsync/
+ignore errors
+read only = no
+list = no
+hosts allow = 192.168.213.0/255.255.255.0
+auth users = test
+secrets file = /etc/rsyncd.password
+</code></pre><p>配置解释：开关选项使用（yes/no)。上述[backup]为模块名，auth users 为同步时输入的用户，path后接要同步的目录，hosts allow后修改为对应允许同步的主机或IP段，read only为只读模式。</p>
+<p><strong> 2、修改rsync用户与对应密码文件 </strong><br><code>vi /etc/rsyncd.password</code><br>添加如下行：<br><code>test:test</code><br>上述为用户<code>test</code>,密码<code>test</code>(用户在前面)</p>
+<p>密码文件创建完毕后，要把其权限设置为600，否则会在以后同步时提示验证出错。执行以下：<br><code>chmod 600 /etc/rsyncd.password</code></p>
+<p>注意：该密码文件中的用户和密码可以进行自定义，同时该用户不一定要在服务器中的系统用户存在。一个rsync配置文件中可以包含多个认证模块，同时一个密码文件中也可以存放多个用户和其对应的密码。其中每一个认证模块可以对应不同的客户端。</p>
+<p>如果重启出现以下<br><code>failed to create pid file /var/run/rsyncd.pid: File exists</code><br>删除相关的pid文件<br><code>rm -rf /var/run/rsyncd.pid</code></p>
+<h1 id="三、系统相关设定"><a href="#三、系统相关设定" class="headerlink" title="三、系统相关设定"></a>三、系统相关设定</h1><p><strong> 1.防火墙放行 </strong><br><code>iptables -I INPUT -p tcp --dport 873 -j ACCEPT</code></p>
+<p><strong> 2.创建相关同步目录，例：</strong><br><code>mkdir /home/rsync/</code></p>
+<p><strong> 3.查看端口是否开启 </strong><br><code>netstat -ntulp</code><br>daemon方式默认端口为873  SSH方式默认端口为22</p>
+<h1 id="四、rsync同步命令"><a href="#四、rsync同步命令" class="headerlink" title="四、rsync同步命令"></a>四、rsync同步命令</h1><p>注：如果是windows系统/cygdrive/c代表c:/其余一样。如要设为定时同步crontab -e然后加入以下同步的命令。例加入<br><code>0 1 * * * date</code>为每天1时0分执行date命令。<br>以下同步命令原则是来源目录在前面，目标目录在后面。</p>
+<h2 id="⑴本机文件同步"><a href="#⑴本机文件同步" class="headerlink" title="⑴本机文件同步"></a>⑴本机文件同步</h2><p>同步本地文件，从一个目录同步到另外一个目录。如：<code>rsync -avz /data /backup</code>，表示把本地/data目录下的文件同步到本地/backup目录下。</p>
+<h2 id="⑵daemon方式远程同步"><a href="#⑵daemon方式远程同步" class="headerlink" title="⑵daemon方式远程同步"></a>⑵daemon方式远程同步</h2><p>此为常用方式，默认端口873<br>如果在WINDOWS同步时提示密码文件无法存取，但是使用手动输入密码可以同步。<br>请把引用密码文件的命令格式改为<code>&lt;c:\icw\rsyncd.password</code>原来的格式为<code>--password-file=/cygdrive/c/icw/rsyncd.password</code></p>
+<p><strong> ①推送文件（从客户端推送文件到服务器端）</strong><br><code>rsync -avz /home/www/* test@192.168.213.146::backup --password-file=/etc/rsyncd.password</code></p>
+<p>上述为把本地<code>/home/www/</code>目录下所有文件推送到<code>192.168.213.146</code>服务器上，用户为<code>test</code>(服务器端配置文件auth users=后的字符和密码文件里的用户)    <code>::</code>后为模块名<code>backup</code></p>
+<p><strong> ②拉取文件（从客户端主动拉取服务器端文件）</strong><br><code>rsync -avz test@192.168.213.146::backup --password-file=/etc/rsyncd.password /home/www/</code></p>
+<p>上述为把<code>192.168.213.146</code>服务器上<code>backup</code>模块预先设定好的目录，同步到本地<code>/home/www/</code>目录下。用户为<code>test</code>(服务器端配置文件auth users=后的字符和密码文件里的用户)    <code>::</code>后为模块名<code>backup</code></p>
+<h2 id="⑶非daemon方式远程同步"><a href="#⑶非daemon方式远程同步" class="headerlink" title="⑶非daemon方式远程同步"></a>⑶非daemon方式远程同步</h2><p>此方式不使用配置文件的模块，使用系统里有的用户账号和密码，请先确认服务端是否开启相关端口，默认22</p>
+<p><strong> ①推送方式：</strong><br>使用一个远程shell程序(如rsh、ssh)来实现把本地的文件同步到远程机器上。如：<code>rsync -avz /data test@192.168.213.146:/backup</code>，表示把本地<code>/data</code>目录下的文件同步到服务器<code>192.168.213.146</code>的<code>/backup</code>目录下。</p>
+<p><strong> ②拉取方式：</strong><br>把远程机器的文件同步到本地。如：<code>rsync -avz test@192.168.213.146:/backup /data</code>，表示把<code>192.168.213.146</code>的<code>/backup</code>目录下文件同步到本地<code>/data</code>目录下。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2017/12/30/rsync/" target="_blank" rel="external">https://zeroto.one/2017/12/30/rsync/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rsync/">rsync</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/同步软件/">同步软件</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/07/17/CentOS7_Install_Docker/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">CentOS 7 安装配置Docker CE</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/12/24/cmd-off-netbios/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">批处理关闭或开启NETBIOS</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>

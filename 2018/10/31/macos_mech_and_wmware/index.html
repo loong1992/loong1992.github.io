@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2018/10/31/macos_mech_and_wmware/">
+    
+    
+    <title>macOS下mech(替代vagrant)配合VMWare使用 | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="mech,wmware">
+    <meta name="description" content="环境说明:macOS 10.14 下VMWare Fusion Pro 11和客户机CentOS7 —2019年更新，virtualbox发布6.x版性能及界面都令我很满意，wmware没太大优势，没必要用wmware了（mech当初用了一周就不用了） 个人觉得mac下的virtualbox性能没有wmware好. 但是又想使用vagrant控制虚拟机. 于是就有了这篇文章.vagrant结合vi">
+<meta name="keywords" content="mech,wmware">
+<meta property="og:type" content="article">
+<meta property="og:title" content="macOS下mech(替代vagrant)配合VMWare使用">
+<meta property="og:url" content="https://zeroto.one/2018/10/31/macos_mech_and_wmware/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="环境说明:macOS 10.14 下VMWare Fusion Pro 11和客户机CentOS7 —2019年更新，virtualbox发布6.x版性能及界面都令我很满意，wmware没太大优势，没必要用wmware了（mech当初用了一周就不用了） 个人觉得mac下的virtualbox性能没有wmware好. 但是又想使用vagrant控制虚拟机. 于是就有了这篇文章.vagrant结合vi">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2018/10/31/5bd9b95d5f28e.png">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="macOS下mech(替代vagrant)配合VMWare使用">
+<meta name="twitter:description" content="环境说明:macOS 10.14 下VMWare Fusion Pro 11和客户机CentOS7 —2019年更新，virtualbox发布6.x版性能及界面都令我很满意，wmware没太大优势，没必要用wmware了（mech当初用了一周就不用了） 个人觉得mac下的virtualbox性能没有wmware好. 但是又想使用vagrant控制虚拟机. 于是就有了这篇文章.vagrant结合vi">
+<meta name="twitter:image" content="https://i.loli.net/2018/10/31/5bd9b95d5f28e.png">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">macOS下mech(替代vagrant)配合VMWare使用</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">macOS下mech(替代vagrant)配合VMWare使用</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-10-31T13:35:36.000Z" itemprop="datePublished" class="page-time">
+  2018-10-31
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#环境说明"><span class="post-toc-text">环境说明:</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装mech"><span class="post-toc-text">安装mech</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BUG1–不能共享"><span class="post-toc-text">BUG1–不能共享</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#BUG2–启动mech报错"><span class="post-toc-text">BUG2–启动mech报错</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#其它的共享方案"><span class="post-toc-text">其它的共享方案</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-macos_mech_and_wmware" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">macOS下mech(替代vagrant)配合VMWare使用</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-10-31 21:35:36" datetime="2018-10-31T13:35:36.000Z" itemprop="datePublished">2018-10-31</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明:"></a>环境说明:</h2><p><strong>macOS 10.14 下VMWare Fusion Pro 11和客户机CentOS7</strong></p>
+<p>—2019年更新，virtualbox发布6.x版性能及界面都令我很满意，wmware没太大优势，没必要用wmware了（mech当初用了一周就不用了）</p>
+<p>个人觉得mac下的virtualbox性能没有wmware好. 但是又想使用vagrant控制虚拟机. 于是就有了这篇文章.<br>vagrant结合virtualbox使用是免费的, 但是vagrant结合wmware要收费, 并且要使用插件, 这个插件要收费$79美元.<br>可以使用mech替代, mech是用python写的, 直接用pip就能安装, mech可以用在linux, windows, macos上.<br>mech使用的命令类似vagrant, 可以直接使用vagrant格式的wmware box镜像</p>
+<p>参考文章:  <a href="https://blog.kchung.co/mech-vagrant-with-vmware-integration-for-free/" target="_blank" rel="noopener">Mech: Vagrant with VMWare Integration for free</a></p>
+<p><a href="https://github.com/mechboxes/mech" target="_blank" rel="noopener">mech官方源码地址</a><br><a id="more"></a></p>
+<h2 id="安装mech"><a href="#安装mech" class="headerlink" title="安装mech"></a>安装mech</h2><pre><code>pip3 install mech
+</code></pre><p>mech版本下载box:</p>
+<pre><code>mech init centos/7
+mech up
+mech ssh
+</code></pre><p>镜像可以用vagrant的, 各种linux发行版镜像列表可以找这里<a href="https://app.vagrantup.com/boxes/search" target="_blank" rel="noopener">box list</a>, 把关键字<code>vagrant</code> 换为<code>mech</code>即可使用该镜像</p>
+<p>上述初始化可以改为以下, 但我尝试加了<code>--name</code>参数报错</p>
+<pre><code>mech init centos/7 --name=虚拟机名
+</code></pre><h2 id="BUG1–不能共享"><a href="#BUG1–不能共享" class="headerlink" title="BUG1–不能共享"></a>BUG1–不能共享</h2><p>启动后报错不能共享文件夹(默认已安装vmware tools)</p>
+<pre><code>ERROR: Error: There was an error mounting the Shared Folders file system inside the guest operating system
+</code></pre><p>此处参考文章:<br><a href="http://www.caojunfei.com/?p=3676" target="_blank" rel="noopener">解决vmware 里centos7与windows共享目录报 mount: unknown filesystem type ‘vmhgfs’</a></p>
+<p>在客户机里查看当前设置的共享目录:</p>
+<pre><code>vmware-hgfsclient
+</code></pre><p>先创建要共享的目录并修改归属用户(这句看当前用户名 <code>echo ${USER}</code>)</p>
+<pre><code>sudo mkdir /mnt/hgfs
+sudo chown vagrant.vagrant /mnt/hgfs
+</code></pre><p>在vmware客户机(centos)里执行挂载文件夹命令:</p>
+<pre><code>/usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs -o subtype=vmhgfs-fuse,allow_other
+</code></pre><p>报错:</p>
+<pre><code>fusermount: option allow_other only allowed if &#39;user_allow_other&#39; is set in /etc/fuse.conf
+</code></pre><p>修改/etc/fuse.conf文件取消注释再试, <code>sudo vi /etc/fuse.conf</code>取消或者新增一行<code>user_allow_other</code></p>
+<p>在vmware客户机里挂载文件夹命令设置开机执行</p>
+<pre><code>sudo vi /etc/rc.d/rc.local
+/usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs -o subtype=vmhgfs-fuse,allow_other
+</code></pre><p>保存, 增加执行权限</p>
+<pre><code>sudo chmod +x /etc/rc.d/rc.local
+</code></pre><p>再开mech, 启动后还是报错, 说不能共享文件夹, 但是这时已经可以在客户机看到共享的文件了, 修改文件会实时双向同步<br>我这里是把上面的<code>/mnt/hgfs</code>目录设置为<code>/www</code>, 默认会把<code>虚拟机项目所在的文件夹</code>共享到共享目录下的<code>mech</code>文件夹, 例如我这里客户机里的共享文件夹是<code>/www/mech</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2018/10/31/5bd9b95d5f28e.png" alt="共享文件夹结果" title>
+                </div>
+                <div class="image-caption">共享文件夹结果</div>
+            </figure>
+<p><strong>提示</strong>: mech启动后, 可以通过<code>mech ssh-config</code>查看私钥文件的位置, 然后就可以用其他工具远程连接了</p>
+<h2 id="BUG2–启动mech报错"><a href="#BUG2–启动mech报错" class="headerlink" title="BUG2–启动mech报错"></a>BUG2–启动mech报错</h2><p>如果启动mech时报错, 尝试关闭vmware的窗口再试</p>
+<pre><code> long@longdeMacBook-Pro  ~/vbox_projects/vm  mech up
+Bringing machine up...
+ERROR: Error: A file access error occurred on the host or guest operating system
+VM not started
+</code></pre><p>注: mech相对vagrant多bug, 目前发现不能<code>mech box remove box名</code>命令移除已添加的box镜像, 但是我通过find命令找到了对应文件的目录,<br>删除<code>~/.mech/boxes</code>目录下的对应文件夹即可移除box镜像, <code>mech box list</code>命令可以看到目前存在的box</p>
+<h2 id="其它的共享方案"><a href="#其它的共享方案" class="headerlink" title="其它的共享方案"></a>其它的共享方案</h2><p><strong>使用sshfs挂载远程服务器的文件, 映射到本地磁盘</strong></p>
+<p>windows下sshfs解决方案:<br><a href="https://wsgzao.github.io/post/winsshfs/" target="_blank" rel="noopener">Dokan+SSHFS 文件系统共享心得，代替 Samba 的理想之选</a><br>如果在windows下用vagrant配合virtualbox虚拟linux, 共享的目录不能修改权限, 都是777.  建议使用sshfs方法替代默认的共享文件夹方法</p>
+<p>linux下sshfs解决方案:<br><a href="https://linux.cn/article-7855-1.html" target="_blank" rel="noopener">linux版SSHFS安装使用方法</a></p>
+<p>mac下sshfs解决方案:<br><a href="https://www.jianshu.com/p/31205b26deff" target="_blank" rel="noopener">Mac 安装 sshfs</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2018/10/31/macos_mech_and_wmware/" target="_blank" rel="external">https://zeroto.one/2018/10/31/macos_mech_and_wmware/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mech/">mech</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wmware/">wmware</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/11/03/word_to_md/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">word旧文转换md系列</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/10/20/win_linux_python_virtualenv/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">windows和linux 配置python虚拟环境</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>

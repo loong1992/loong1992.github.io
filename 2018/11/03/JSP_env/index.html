@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2018/11/03/JSP_env/">
+    
+    
+    <title>旧文系列--JDK Resin Apache 配置 | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="旧文转换,JSP">
+    <meta name="description" content="环境说明：CentOS6.5下JDK1.6、apache2.2、resin3.1 源码编译安装 注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差.">
+<meta name="keywords" content="旧文转换,JSP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="旧文系列--JDK Resin Apache 配置">
+<meta property="og:url" content="https://zeroto.one/2018/11/03/JSP_env/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="环境说明：CentOS6.5下JDK1.6、apache2.2、resin3.1 源码编译安装 注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="旧文系列--JDK Resin Apache 配置">
+<meta name="twitter:description" content="环境说明：CentOS6.5下JDK1.6、apache2.2、resin3.1 源码编译安装 注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差.">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">旧文系列--JDK Resin Apache 配置</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">旧文系列--JDK Resin Apache 配置</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-11-03T11:05:35.000Z" itemprop="datePublished" class="page-time">
+  2018-11-03
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一-JDK安装"><span class="post-toc-text">一.JDK安装</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二-防火墙允许服务（安装完系统要做）"><span class="post-toc-text">二. 防火墙允许服务（安装完系统要做）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三-安装apache"><span class="post-toc-text">三. 安装apache</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四、编辑Apache的扩展配置文件"><span class="post-toc-text">四、编辑Apache的扩展配置文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#①-配置Apache进程管理"><span class="post-toc-text">①.配置Apache进程管理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#②-配置Apache虚拟主机"><span class="post-toc-text">②.配置Apache虚拟主机</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#③配置Apache服务器默认设置"><span class="post-toc-text">③配置Apache服务器默认设置</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五、安装配置apache模块"><span class="post-toc-text">五、安装配置apache模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#①配置支持中文URL路径"><span class="post-toc-text">①配置支持中文URL路径</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#②配置防DDOS攻击模块"><span class="post-toc-text">②配置防DDOS攻击模块</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#③配置限制带宽"><span class="post-toc-text">③配置限制带宽</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#④mod-proxy代理服务"><span class="post-toc-text">④mod_proxy代理服务</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑤反向加速-代理加速模块"><span class="post-toc-text">⑤反向加速/代理加速模块</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑥启用mod-expires模块"><span class="post-toc-text">⑥启用mod_expires模块</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑦安装设置浏览器缓存模块"><span class="post-toc-text">⑦安装设置浏览器缓存模块</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#六-安装Resin"><span class="post-toc-text">六. 安装Resin</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#七-apache与resin的整合配置"><span class="post-toc-text">七. apache与resin的整合配置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#八-配置完成，测试"><span class="post-toc-text">八.配置完成，测试</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#九-添加到开机启动"><span class="post-toc-text">九.添加到开机启动</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#（1）设置resin开机启动"><span class="post-toc-text">（1）设置resin开机启动</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#（2）设置apache开机启动"><span class="post-toc-text">（2）设置apache开机启动</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#十-其他命令说明补充"><span class="post-toc-text">十.其他命令说明补充</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-JSP_env" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">旧文系列--JDK Resin Apache 配置</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-11-03 19:05:35" datetime="2018-11-03T11:05:35.000Z" itemprop="datePublished">2018-11-03</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>环境说明：CentOS6.5下JDK1.6、apache2.2、resin3.1 源码编译安装</p>
+<p><strong>注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差. </strong><br><a id="more"></a></p>
+<h2 id="一-JDK安装"><a href="#一-JDK安装" class="headerlink" title="一.JDK安装"></a>一.JDK安装</h2><p><strong>a)</strong> 下载JDK安装包jdk-6u29-linux-x64-rpm.bin</p>
+<p><strong>b)</strong> 修改权限（改为可运行+x） chmod +x jdk-6u29-linux-x64-rpm.bin</p>
+<p><strong>c)</strong> 执行 ./jdk-6u29-linux-x64-rpm.bin</p>
+<p><strong>d)</strong> 设置系统环境变量。</p>
+<p>为防止出现乱码</p>
+<p>（编辑/etc/profile 添加export<br>LC_ALL=zh_CN.GB18030保存退出。 source /etc/profile）</p>
+<p>Vi /etc/sysconfig/i18n</p>
+<p>注释以下句（使用注释不用删除，防止以后找回时没有）</p>
+<p>#LANG=”en_US.UTF-8”</p>
+<p>#SYSFONT=”latarcyrheb-sun16”</p>
+<p>添加以下句</p>
+<p>LANG=”zh_CN.GB18030”</p>
+<p>LANGUAGE=”zh_CN.GB18030:zh_CN.GB2312:zh_CN”</p>
+<p>SUPPORTED=”zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en”</p>
+<p>SYSFONT=”lat0-sun16”</p>
+<p>在/etc/profile最下面加上以下几段</p>
+<p># set java</p>
+<p>JAVA_HOME=/usr/java/jdk1.6.0_29</p>
+<p>PATH=\$JAVA_HOME/bin:\$PATH CLASSPATH=.:\$JAVA_HOME/lib</p>
+<p>JRE_HOME=\$JAVA_HOME/jre</p>
+<p>export JAVA_HOME PATH CLASSPATH JRE_HOME</p>
+<p>export LC_ALL=zh_CN.GB18030</p>
+<p>保存退出。</p>
+<p>source /etc/profile</p>
+<p><strong>e）</strong>测试下JDK是否成功。</p>
+<p>java -version 如果出现以下信息说明JDK配置成功。</p>
+<p>java version “1.6.0_29”</p>
+<p>Java(TM) SE Runtime Environment (build 1.6.0_29-b11)</p>
+<p>Java HotSpot(TM) 64-Bit Server VM (build 20.4-b02, mixed mode)</p>
+<h2 id="二-防火墙允许服务（安装完系统要做）"><a href="#二-防火墙允许服务（安装完系统要做）" class="headerlink" title="二. 防火墙允许服务（安装完系统要做）"></a>二. 防火墙允许服务（安装完系统要做）</h2><p>iptables -L 列出目前防火墙设置</p>
+<p>iptables -F 清空防火墙规则</p>
+<p>或者直接删除 /etc/sysconfig/ 下 iptables 和iptables.old 文件</p>
+<p>vi /etc/selinux/config</p>
+<p>SELINUX=disabled 关闭系统安全策略（永久，需重启）</p>
+<p>getenforce 获取目前状态</p>
+<p>setenforce 0 临时改（无需重启）</p>
+<h2 id="三-安装apache"><a href="#三-安装apache" class="headerlink" title="三. 安装apache"></a>三. 安装apache</h2><p>安装GCC等组件（如果系统没有安装）</p>
+<p>如果安装apache提示“no acceptable C compiler found in<br>\$PATH”，这是因为系统中没有安装gcc</p>
+<p>yum install -y gcc gcc-c++ zlib-devel</p>
+<p>（1）下载apache，下载地址为：<a href="http://mirror.esocc.com/apache//httpd/httpd-2.2.31.tar.gz" target="_blank" rel="noopener">http://mirror.esocc.com/apache//httpd/httpd-2.2.31.tar.gz</a></p>
+<p>（2）tar zxvf httpd-2.2.31.tar.gz</p>
+<p>（3）cd httpd-2.2.31</p>
+<p>（4）./configure –prefix=/usr/local/httpd –enable-so –enable-mods-shared=most<br>–with-mpm=worker –with-included-apr –enable-expires=shared<br>–enable-deflate=shared –enable-rewrite=shared –enable-static-support</p>
+<p>（5）make &amp;&amp; make install</p>
+<p>（6）apache安装完成后，进入/usr/local/httpd/bin/目录下，执行./apachectl<br>start命令启动apache</p>
+<p>（7）centos本机访问，使用curl -I<br><a href="http://127.0.0.1/命令查看apache服务是否安装正常。（如显示OK" target="_blank" rel="noopener">http://127.0.0.1/命令查看apache服务是否安装正常。（如显示OK</a> 代号200 说明成功）</p>
+<h2 id="四、编辑Apache的扩展配置文件"><a href="#四、编辑Apache的扩展配置文件" class="headerlink" title="四、编辑Apache的扩展配置文件"></a>四、编辑Apache的扩展配置文件</h2><p>配置apache的进程管理、默认设置以及虚拟主机。</p>
+<p>找到：</p>
+<p>#Include conf/extra/httpd-mpm.conf</p>
+<p>#Include conf/extra/httpd-info.conf</p>
+<p>#Include conf/extra/httpd-vhosts.conf</p>
+<p>#Include conf/extra/httpd-default.conf</p>
+<p>去掉前面的“#”号，取消注释。</p>
+<p>注：以上 4<br>个扩展配置文件中的设置请按照相关原则进行合理配置！修改完成后保存退出。</p>
+<h3 id="①-配置Apache进程管理"><a href="#①-配置Apache进程管理" class="headerlink" title="①.配置Apache进程管理"></a>①.配置Apache进程管理</h3><p>查看当前httpd的工作模式，可执行 /usr/local/httpd/bin/apachectl -l</p>
+<p>进程管理模式共有三种：worker模式、prefork模式、Event模式</p>
+<p>配置文件为：/usr/local/httpd/conf/extra/httpd-mpm.conf</p>
+<p>将配置文件中下面一段修改为如下，worker工作模式例子与详解：</p>
+<p>\<ifmodule mpm_worker_module\></ifmodule></p>
+<p>StartServers 2 //启动apache时，首次启动2个进程</p>
+<p>MaxClients 150 //最多支持150个并发的http链接</p>
+<p>MinSpareThreads 25 //最少有25个线程空闲，否则新增加进程或者线程了</p>
+<p>MaxSpareThreads 75 //最多有75个线程空闲，否则就要自动回收多余空闲的线程或者进程</p>
+<p>ThreadsPerChild 25 //启动一个进程时，此进程首先启动25个线程</p>
+<p>MaxRequestsPerChild 1000<br>//允许每个进程在它的生命周期内处理的http最大请求1000.。0为没有限制。（不建议设为0，可能内存溢出）</p>
+<p>\&lt;/IfModule></p>
+<p>以下是<strong>例子</strong>配置</p>
+<p>\<ifmodule mpm_worker_module\></ifmodule></p>
+<p>ServerLimit 50 //最多可以启动50个进程</p>
+<p>ThreadLimit 1000 //每个进程最多可以启动1000个线程</p>
+<p>StartServers 8</p>
+<p>MaxClients 5000</p>
+<p>MinSpareThreads 750</p>
+<p>MaxSpareThreads 2500</p>
+<p>ThreadsPerChild 1000</p>
+<p>MaxRequestsPerChild 20000</p>
+<p>\&lt;/IfModule></p>
+<p><strong>指令说明</strong>（根据每台机的配置，设置对应的参数）：</p>
+<p><strong>StartServers</strong>：设置服务器启动时建立的子进程数量。因为子进程数量动态的取决于负载的轻重,所有一般没有必要调整这个参数。</p>
+<p><strong>MaxClients</strong>：允许同时伺服的最大接入请求数量(最大线程数量)。任何超过MaxClients限制的请求都将进入等候队列。默认值是400，16(ServerLimit)乘以25(ThreadsPerChild)的结果。因此要增加MaxClients的时候，你必须同时增加ServerLimit的值。</p>
+<p><strong>ThreadsPerChild</strong>:每个子进程建立的常驻的执行线程数。默认值是25。子进程在启动时建立这些线程后就不再建立新的线程了。</p>
+<p><strong>MinSpareThreads</strong>:最小空闲线程数,默认值是75。这个MPM将基于整个服务器监视空闲线程数。如果服务器中总的空闲线程数太少，子进程将产生新的空闲线程。</p>
+<p><strong>MaxSpareThreads</strong>:设置最大空闲线程数。默认值是250。这个MPM将基于整个服务器监视空闲线程数。如果服务器中总的空<br>闲线程数太多，子进程将杀死多余的空闲线程。MaxSpareThreads的取值范围是有限制的。Apache将按照如下限制自动修正你设置的<br>值：worker要求其大于等于MinSpareThreads加上ThreadsPerChild的和。</p>
+<p><strong>MaxRequestsPerChild</strong>：设置每个子进程在其生存期内允许伺服的最大请求数量。到达MaxRequestsPerChild的限制后，子进程将会结束。如果MaxRequestsPerChild为0，子进程将永远不会结束。将MaxRequestsPerChild设置成非零值有两个好处：</p>
+<p>1.可以防止(偶然的)内存泄漏无限进行，从而耗尽内存。</p>
+<p>2.给进程一个有限寿命，从而有助于当服务器负载减轻的时候减少活动进程的数量。</p>
+<p>注意对于KeepAlive链接，只有第一个请求会被计数。事实上，它改变了每个子进程限制最大链接数量的行为。</p>
+<p>先计算每一个httpd请求大概占用多少内存，除去系统和其他程序占用的内存后，估计每秒请求数有多少，就可以计算出来了</p>
+<h3 id="②-配置Apache虚拟主机"><a href="#②-配置Apache虚拟主机" class="headerlink" title="②.配置Apache虚拟主机"></a>②.配置Apache虚拟主机</h3><p>配置文件为：/usr/local/httpd/conf/extra/httpd-vhosts.conf</p>
+<p>将配置文件中下面一段修改为相应虚拟主机域名和相应目录，下例为改为<a href="http://www.test.org：" target="_blank" rel="noopener">www.test.org：</a></p>
+<p>\<virtualhost \*:80\></virtualhost></p>
+<p>ServerAdmin webmaster\@dummy-host2.localhost</p>
+<p>DocumentRoot “/home/www/test/“</p>
+<p>ServerName <a href="http://www.test.org" target="_blank" rel="noopener">www.test.org</a></p>
+<p>\&lt;Directory “/home/www/test/“></p>
+<p>Options Indexes FollowSymLinks</p>
+<p>AllowOverride All</p>
+<p>Order allow,deny</p>
+<p>Allow from all</p>
+<p>\&lt;/Directory></p>
+<p>\&lt;/VirtualHost></p>
+<p>新建目录（改为上述的虚拟主机目录）</p>
+<p>mkdir -p /home/www/test/</p>
+<p>重启apache服务service httpd restart</p>
+<p>如果想要在centos本机测试，用虚拟主机域名方式浏览，请编辑vi /etc/hosts文件加上：</p>
+<p>127.0.0.1 <a href="http://www.test.org" target="_blank" rel="noopener">www.test.org</a></p>
+<h3 id="③配置Apache服务器默认设置"><a href="#③配置Apache服务器默认设置" class="headerlink" title="③配置Apache服务器默认设置"></a>③配置Apache服务器默认设置</h3><p>vi /usr/local/httpd/conf/extra/httpd-default.conf</p>
+<p># 联机超过 60 秒失败就重试</p>
+<p>Timeout 60</p>
+<p># 开启 KeepAlive</p>
+<p>KeepAlive Off</p>
+<p># 设定同一时间可容许的 KeppAlive 量</p>
+<p>MaxKeepAliveRequests 5000</p>
+<p># KeepAlive 多久要自动 Timeout 掉</p>
+<p>KeepAliveTimeout 3</p>
+<p># 关掉那费时的 DNS 查寻</p>
+<p>HostnameLookups Off</p>
+<p><strong>总结一下：</strong></p>
+<p>　　在内存非常充足的服务器上，不管是否关闭 KeepAlive<br>功能，服务器性能不会有明显变化；</p>
+<p>　　如果服务器内存较少，或者服务器有非常大量的文件系统访问时，或者主要处理动态网页服务，关闭<br>KeepAlive<br>后可以节省很多内存，而节省出来的内存用于文件系统Cache，可以提高文件系统访问的性能，并且系统会更加稳定。</p>
+<p>　　补充：</p>
+<p>　　关于是否应该关闭 KeepAlive<br>选项，我觉得可以基于下面的一个公式来判断。　　在理想的网络连接状况下，系统的<br>Apache 进程数和内存使用可以用如下公式表达：</p>
+<p>HttpdProcessNumber = KeepAliveTimeout * TotalRequestPerSecond /<br>Average(KeepAliveRequests)</p>
+<p>HttpdUsedMemory = HttpdProcessNumber * MemoryPerHttpdProcess</p>
+<p>　　换成中文：</p>
+<p>总Apache进程数 = KeepAliveTimeout * 每秒种HTTP请求数 / 平均KeepAlive请求</p>
+<p>Apache占用内存 = 总Apache进程数 * 平均每进程占用内存数　　需要特别说明的是：</p>
+<p>　　[平均KeepAlive请求] 数，是指每个用户连接上服务器后，持续发出的 HTTP<br>请求数。当 KeepAliveTimeout 等 0 或者 KeepAlive 关闭时，KeepAliveTimeout<br>不参与乘的运算从上面的公式看，如果 [每秒用户请求] 多，[KeepAliveTimeout]<br>的值大，[平均KeepAlive请求] 的值小，都会造成 [Apache进程数] 多和 [内存]<br>多，但是当 [平均KeepAlive请求] 的值越大时，[Apache进程数] 和 [内存]<br>都是趋向于减少的。</p>
+<p>　　基于上面的公式，我们就可以推算出当 平均KeepAlive请求 \&lt;= KeepAliveTimeout<br>时，关闭 KeepAlive 选项是划算的，否则就可以考虑打开。</p>
+<p>Timeout：设置服务器在断定请求失败前等待的秒数。默认值300。</p>
+<p>KeepAlive：设置是否启用HTTP持久链接，On 代表打开，Off<br>代表关闭。如果用于同一页面包含大量静态文件的应用，设置为On，以提高性能；如果用于主要为动态页面的应用，</p>
+<p>设置为Off，以节约内存资源；如果服务器前跑有squid或者其它七层设备，设置为On。</p>
+<p>MaxKeepAliveRequests：限制当启用KeepAlive时，每个连接允许的请求数量。如果将此值设为”0”，将不限制请求的数目。笔者建议将此值设为100-500之间的一个值，以确保最优</p>
+<p>的服务器性能。</p>
+<p>KeepAliveTimeout：设置持久链接中服务器在两次请求之间等待的秒数。对于高负荷服务器来说，KeepAliveTimeout值较大会导致一些性能方面的问题：超时值越大，与空闲客户</p>
+<p>端保持连接的进程就越多。</p>
+<p>UseCanonicalName：配置服务器如何确定它自己的域名，可选值为On | Off |<br>DNS。DNS用于为大量基于IP的虚拟主机支持那些古董级的不提供”Host:”头的浏览器使用。笔者建议</p>
+<p>设置为Off。</p>
+<p>AccessFileName：设置分布式配置文件的名字，默认为.htaccess。如果为某个目录启用了分布式配置文件功能，那么在向客户端返回其中的文档时，服务器将在这个文档所在的各</p>
+<p>级目录中查找此配置文件，因此会带来性能问题，笔者建议关闭分布式配置文件功能。</p>
+<p>ServerTokens：控制服务器回应给客户端的”Server:”应答头是否包含关于服务器操作系统类型和编译进的模块描述信息，同时还控制着<br>ServerSignature指令的显示内容。可选值</p>
+<p>为Full | OS | Minor | Minimal | Major |<br>Prod。笔者建议设置为显示最少信息的Prod。</p>
+<p>ServerSignature：配置服务器生成页面的页脚，可选值为On | Off |<br>EMail。采用On会简单的增加一行关于服务器版本和正在伺服的虚拟主机的ServerName，而EMail设置会额外</p>
+<p>创建一个指向 ServerAdmin的”mailto:”部分。建议使用默认值Off。</p>
+<p>HostnameLookups：设置是否启用对客户端IP的DNS查找，可选值为On | Off |<br>Double。DNS查询会造成明显的时间消耗，建议设置为Off。</p>
+<h2 id="五、安装配置apache模块"><a href="#五、安装配置apache模块" class="headerlink" title="五、安装配置apache模块"></a>五、安装配置apache模块</h2><p><strong>注：</strong>apache的LoadModule是按顺序加载的，mod_cband（限速）要在mod_proxy（代理）之前。下面部分模块在编译安装apache时就已安装了。</p>
+<h3 id="①配置支持中文URL路径"><a href="#①配置支持中文URL路径" class="headerlink" title="①配置支持中文URL路径"></a>①配置支持中文URL路径</h3><p>起作用的模块为mod_encoding</p>
+<p><strong>1、先打补丁</strong></p>
+<p>yum install patch -y</p>
+<p># wget <a href="http://webdav.todo.gr.jp/download/mod_encoding-20021209.tar.gz" target="_blank" rel="noopener">http://webdav.todo.gr.jp/download/mod_encoding-20021209.tar.gz</a></p>
+<p># wget<br><a href="http://webdav.todo.gr.jp/download/experimental/mod_encoding.c.apache2.20040616" target="_blank" rel="noopener">http://webdav.todo.gr.jp/download/experimental/mod_encoding.c.apache2.20040616</a></p>
+<p>新版本mod_encoding.c 覆盖</p>
+<p># cp mod_encoding.c.apache2.20040616 mod_encoding-20021209/mod_encoding.c</p>
+<p>这里必须要打一个apache 2.2的补丁。否则make也会出apxs rc=65536 之类的错误。</p>
+<p># wget<br><a href="http://www.aconus.com/\~oyaji/faq/mod_encoding.c-apache2.2-20060520.patch" target="_blank" rel="noopener">http://www.aconus.com/\~oyaji/faq/mod_encoding.c-apache2.2-20060520.patch</a></p>
+<p># cd mod_encoding-20021209</p>
+<p># patch -p0 \&lt; mod_encoding.c-apache2.2-20060520.patch</p>
+<p><strong>2、安装iconv-hook库</strong></p>
+<p># cd mod_encoding-20021209/lib</p>
+<p># ./configure –prefix=/usr</p>
+<p># make</p>
+<p># make install</p>
+<p># ldconfig</p>
+<p><strong>3、生成 mod_encoding的so文件</strong></p>
+<p>./configure –with-apxs=/usr/local/httpd/bin/apxs –with-iconv-hook=/usr/include</p>
+<p>make</p>
+<p>gcc -shared -o mod_encoding.so mod_encoding.o -Wc,-Wall -Llib -liconv_hook</p>
+<p>cp mod_encoding.so /usr/local/httpd/modules</p>
+<p><strong>4、编辑 apache 2.2 配置</strong></p>
+<p>vi /usr/local/httpd/conf/httpd.conf</p>
+<p>加入以下行</p>
+<p>LoadModule encoding_module modules/mod_encoding.so</p>
+<p>\<ifmodule mod_encoding.c\></ifmodule></p>
+<p>EncodingEngine on</p>
+<p>NormalizeUsername on</p>
+<p>SetServerEncoding GBK</p>
+<p>DefaultClientEncoding UTF-8 GBK GB2312</p>
+<p>AddClientEncoding “(Microsoft .* DAV \$)” UTF-8 GBK GB2312</p>
+<p>AddClientEncoding “Microsoft .* DAV” UTF-8 GBK GB2312</p>
+<p>AddClientEncoding “Microsoft-WebDAV*“ UTF-8 GBK GB2312</p>
+<p>\&lt;/IfModule></p>
+<h3 id="②配置防DDOS攻击模块"><a href="#②配置防DDOS攻击模块" class="headerlink" title="②配置防DDOS攻击模块"></a>②配置防DDOS攻击模块</h3><p>下载mod_evasive</p>
+<p><a href="http://www.nuclearelephant.com/projects/mod_evasive" target="_blank" rel="noopener">http://www.nuclearelephant.com/projects/mod_evasive</a></p>
+<p>#tar zxvf mod_evasive_1.10.1.tar.gz</p>
+<p>#cd mod_evasive</p>
+<p>#/usr/local/httpd/bin/apxs -i -a -c mod_evasive20.c</p>
+<p>打开 httpd.conf文件，查看是否有以下行，如没有则加上去</p>
+<p>LoadModule evasive20_module modules/mod_evasive20.so</p>
+<p>并加入</p>
+<p>\<ifmodule mod_evasive20.c\></ifmodule></p>
+<p>DOSHashTableSize 3097</p>
+<p>DOSPageCount 2</p>
+<p>DOSSiteCount 50</p>
+<p>DOSPageInterval 1</p>
+<p>DOSSiteInterval 1</p>
+<p>DOSBlockingPeriod 10</p>
+<p>\&lt;/IfModule></p>
+<h3 id="③配置限制带宽"><a href="#③配置限制带宽" class="headerlink" title="③配置限制带宽"></a>③配置限制带宽</h3><p>模块名为mod-cband</p>
+<p>#tar xzvf mod-cband-0.9.6.1.tgz</p>
+<p>#cd mod-cband-0.9.6.1</p>
+<p>./configure –with-apxs=/usr/local/httpd/bin/apxs //指定一下<br>apxs的路径，否则可能会出错</p>
+<p>#make</p>
+<p>#make install</p>
+<p>安装成功后提示：</p>
+<p>chmod 755 /usr/local/httpd/modules/mod_cband.so</p>
+<p>打开/usr/local/httpd/conf/httpd.conf</p>
+<p>LoadModule cband_module modules/mod_cband.so已经添加。</p>
+<p>安装模块到此完毕，以下是配置</p>
+<p>然后在虚拟主机配置文件中，按以下方法修改：</p>
+<p>\<virtualhost \*:80\></virtualhost></p>
+<p>ServerName <a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a></p>
+<p>ServerAdmin webmaster\@example.com</p>
+<p>DocumentRoot /home/www/html/example_com</p>
+<p>CBandLimit 100M //限制虚拟主机总访问带宽为100Mb。</p>
+<p>CBandSpeed 1024 10 30<br>//CBandSpeed限定总的最大链接速度为1024kb,最多并发处理10个请求每秒和30个链接每秒</p>
+<p>CBandRemoteSpeed 20kb/s 5 3 //<br>CBandRemoteSpeed限定一个用户最多能有20kb的链接速度,最多并发5个请求每秒和3个链接每秒</p>
+<p>CBandPeriod 4W //设定多久对所记录的全局访问带宽进行重设（清零）。4W=4 weeks<br>4周（一个月）</p>
+<p>\&lt;Location /cband-status></p>
+<p>SetHandler cband-status</p>
+<p>\&lt;/Location></p>
+<p>#<br>开启了mod_cband的实时监测功能，可以通过<a href="http://server_name/cband-status进行直观的观测。（全局监测）" target="_blank" rel="noopener">http://server_name/cband-status进行直观的观测。（全局监测）</a></p>
+<p>\&lt;Location /cband-status-me></p>
+<p>SetHandler cband-status-me</p>
+<p>\&lt;/Location></p>
+<p>#<br>开启了mod_cband的实时监测功能，可以通过<a href="http://server_name/cband-status-me进行直观的观测。（单一监测）" target="_blank" rel="noopener">http://server_name/cband-status-me进行直观的观测。（单一监测）</a></p>
+<p>\&lt;/VirtualHost></p>
+<h3 id="④mod-proxy代理服务"><a href="#④mod-proxy代理服务" class="headerlink" title="④mod_proxy代理服务"></a>④mod_proxy代理服务</h3><p>apache提供了mod_proxy模块用于提供代理服务，能够支持的包括正向代理、反向代理、透明代理、缓存、负载均衡，HTTP代理、FTP代理、SSL代理等若干强大的功能。</p>
+<p>通常我们使用的比较多的，是正向代理。也就是在浏览器的网络连接属性框中，填写上一个代理服务器的ip和端口，即可通过代理服务器中转，去浏览网页。</p>
+<p>如果apache没有安装proxy模块，可以不用重新编译，就能添加模块。</p>
+<p>cd /home/soft/httpd-2.2.31/modules/proxy</p>
+<p>/usr/local/httpd/bin/apxs -c -i mod_proxy.c proxy_util.c (ps<br>必须2个c一起编译，不然会报错) /usr/local/httpd/bin/apxs -c -i mod_proxy_http.c<br>proxy_util.c</p>
+<p>vi /usr/local/httpd/conf/httpd.conf</p>
+<p>添加以下行</p>
+<p>LoadModule proxy_module modules/mod_proxy.so</p>
+<p>LoadModule proxy_http_module modules/mod_proxy_http.so</p>
+<p><strong>这里只要求安装模块，如果没有设置代理的要求，先不用配置。</strong></p>
+<p><strong>配置正向代理:</strong></p>
+<p>首先在apache上启用mod_proxy模块，需要注意的是，如果在apache-2.2上，则还需要加载名为mod_proxy_http的模块。因为2.2系列把代理功能都拆分成N个小模块了。打开apache的conf(虚拟主机方式或全局配置)，加入如下几行：（全局配置）</p>
+<p>ProxyRequests On</p>
+<p>ProxyVia On</p>
+<p>\<proxy \*\></proxy></p>
+<p>Order deny,allow</p>
+<p>Deny from all</p>
+<p>Allow from internal.example.com</p>
+<p>\&lt;/Proxy></p>
+<p>保存退出，重启apache服务：service httpd restart<br>现在即可在浏览器的网络连接属性框中，填写上your_apache_server_ip的ip地址，端口是80，开始用代理了。<br>使用apache提供的代理，也可以加身份验证，或者设置ACL来限制客户端来源等。这些配置就和普通的apache站点配置一样。</p>
+<p>注：使用正向代理时严格控制访问权限(使用ProxyRequests指令)是非常重要的。否则你的代理会被客户端利用来访问其它服务器并且隐藏客户端的真实身份。这不仅对您的网络有威胁，对整个因特网来说也同样如此。当使用反向代理(在”ProxyRequests<br>Off”条件下使用ProxyPass指令)的时候访问控制要相对宽松，因为客户端只能连接你配置的特定主机。</p>
+<p><strong>配置反向代理:</strong></p>
+<p>如从某地访问google太慢，但是机房服务器上很快，则可在服务器上设置反向代理连接到google，也就是把google映射到服务器上来访问。然后新建一个网站，即创建一个标准的配置段。这里我们将站点/google目录设置为google的反向代理。在这段里边，加入下边一内容：</p>
+<p>ProxyRequests Off</p>
+<p>\<proxy \*\></proxy></p>
+<p>Order deny,allow</p>
+<p>Allow from all</p>
+<p>\&lt;/Proxy></p>
+<p>ProxyPass /google <a href="http://www.google.com/" target="_blank" rel="noopener">http://www.google.com/</a><br>//前面可以直接访问（80）后面代理的（82）</p>
+<p>ProxyPassReverse /google <a href="http://www.google.com/" target="_blank" rel="noopener">http://www.google.com/</a></p>
+<p>保存退出，重启apache。ProxyPass与ProxyPassReverse的内容总是一样，ProxyPassReverse是重定向~~~~</p>
+<p>现在即可使用浏览器来访问我的网站的/google目录。当打开这个目录的时候，会发现页面是google。点击google的下级页面，都可以正常的打开访问，而此时浏览器中的代理服务器并未设置任何内容——这就是反向代理。</p>
+<h3 id="⑤反向加速-代理加速模块"><a href="#⑤反向加速-代理加速模块" class="headerlink" title="⑤反向加速/代理加速模块"></a>⑤反向加速/代理加速模块</h3><p>模块名为mod_extract_forwarded</p>
+<p>tar zxvf mod_extract_forwarded2-0.1.tar.gz</p>
+<p>cd extract_forwarded</p>
+<p>/usr/local/httpd/bin/apxs -c -i -a mod_extract_forwarded2.c</p>
+<p>这个全自动安装,会在apache的httpd.conf自动添加</p>
+<p>LoadModule extract_forwarded_module modules/mod_extract_forwarded2.c</p>
+<p>默认这时还不工作，还需要配置 (其中 127.0.0.1 为代理加速配置)</p>
+<p>MEForder refuse,accept</p>
+<p>MEFrefuse all</p>
+<p>MEFaccept 127.0.0.1</p>
+<p>#MEFaddenv on</p>
+<p>#default on</p>
+<p>#MEFdebug on</p>
+<p>#default off</p>
+<p><strong>以下为测试</strong></p>
+<p>MEFdebug 设为 on 的话</p>
+<p>cd /var/log/httpd/</p>
+<p>tail error_log</p>
+<p>可以看到很多具体信息</p>
+<p>MEF: phase:post read request, initial substituted 1.1.1.1 for 127.0.0.1,<br><a href="http://2.2.2.2/file.html" target="_blank" rel="noopener">http://2.2.2.2/file.html</a></p>
+<p>MEF: phase:URI translate, already done, NFA required, <a href="http://2.2.2.2/file.html" target="_blank" rel="noopener">http://2.2.2.2/file.html</a></p>
+<p>MEF: phase:access check, already done, NFA required, <a href="http://2.2.2.2/file.html" target="_blank" rel="noopener">http://2.2.2.2/file.html</a></p>
+<p>MEF: phase:cleanup initial, undo spoof substituted 127.0.0.1 for 1.1.1.1</p>
+<p>1.1.1.1 为远端客户机</p>
+<p>2.2.2.2 为服务器 用ip连接 当然域名也可以</p>
+<p>如果不通过代理加速直接连的话</p>
+<p>MEF: phase:post read request, no FORWARDED-FOR header, /favicon.ico</p>
+<p>MEF: phase:URI translate, no FORWARDED-FOR header, /favicon.ico</p>
+<p>MEF: phase:access check, no FORWARDED-FOR header, /favicon.ico</p>
+<h3 id="⑥启用mod-expires模块"><a href="#⑥启用mod-expires模块" class="headerlink" title="⑥启用mod_expires模块"></a>⑥启用mod_expires模块</h3><p>mod_expires可以减少10%左右的重复请求，让重复的用户对指定的页面请求结果都CACHE在本地，根本不向服务器发出请求。</p>
+<p>在使用之前,首先要确认一下”mod_expires”模组是否有启用。编辑Apache的”httpd.conf”配置文件。搜索找到这行，取消注释:</p>
+<p>#LoadModule expires_module modules/mod_expires.so</p>
+<p><strong>上述所有模块安装配置完毕后重启apache</strong></p>
+<h3 id="⑦安装设置浏览器缓存模块"><a href="#⑦安装设置浏览器缓存模块" class="headerlink" title="⑦安装设置浏览器缓存模块"></a>⑦安装设置浏览器缓存模块</h3><p><strong>mod_headers模块</strong>：该模块用来设置浏览器缓存文件，如果安装apache时没有安装mod_headers模块，使用以下apache安装加载</p>
+<p>1、进入httpd源码包下的目录modules/metadata。</p>
+<p>cd /home/soft/httpd-2.2.20/modules/metadata</p>
+<p>2、执行安装命令。</p>
+<p>/usr/local/httpd/bin/apxs -i -a -c mod_headers.c</p>
+<p><strong>如果要启用</strong>在httpd.conf 中设置：</p>
+<p>LoadModule headers_module modules/mod_headers.so</p>
+<p>\<ifmodule mod_headers.c\></ifmodule></p>
+<p>Header add MS-Author-Via “DAV”</p>
+<p>\&lt;/IfModule></p>
+<h2 id="六-安装Resin"><a href="#六-安装Resin" class="headerlink" title="六. 安装Resin"></a>六. 安装Resin</h2><p>a) 下载Resin源码包resin-pro-3.1.12.tar.gz 放到目录/home/soft</p>
+<p>b) 解压resin源码包 tar -zxvf resin-pro-3.1.12.tar.gz</p>
+<p>c)进入文件夹</p>
+<p>cd /home/soft/resin-pro-3.1.12</p>
+<p>d) 编译源码</p>
+<p>./configure –prefix=/usr/local/resin –with-apxs=/usr/local/httpd/bin/apxs<br>–with-java-home=/usr/java/jdk1.6.0_29</p>
+<p>make &amp;&amp; make install</p>
+<p>e)安装许可证(覆盖，最好先删除原文件）</p>
+<p>cp /home/soft/license.jar /usr/local/resin/lib/license.jar</p>
+<h2 id="七-apache与resin的整合配置"><a href="#七-apache与resin的整合配置" class="headerlink" title="七. apache与resin的整合配置"></a>七. apache与resin的整合配置</h2><p><strong>a) 修改apache配置文件</strong></p>
+<p>进入apache目录<br>/usr/local/httpd/conf/目录下，查看httpd.conf文件如果发现以下内容，则表示整合成功了一半。</p>
+<p>LoadModule caucho_module /usr/local/httpd/modules/mod_caucho.so</p>
+<p>ResinConfigServer localhost 6800</p>
+<p>CauchoConfigCacheDirectory /tmp</p>
+<p>CauchoStatus yes</p>
+<p>上述6800是端口。</p>
+<p>找到以下：这一行后增加index.jsp 这样可以支持JSP文件</p>
+<p>\<ifmodule dir_module\></ifmodule></p>
+<p>DirectoryIndex index.html</p>
+<p>\&lt;/IfModule></p>
+<p>将该行改为</p>
+<p>\<ifmodule dir_module\></ifmodule></p>
+<p>DirectoryIndex index.html index.htm index.jsp</p>
+<p>\&lt;/IfModule></p>
+<p>找到#ServerName <a href="http://www.example.com:80在下面添加一行" target="_blank" rel="noopener">www.example.com:80在下面添加一行</a></p>
+<p>ServerName localhost:80</p>
+<p>修改其工程目录：</p>
+<p>DocumentRoot “/usr/local/resin/webapps/ROOT”</p>
+<p>以下行修改路径及控制目录和文件的访问授权：如下设为允许所有</p>
+<p>\&lt;Directory “/usr/local/resin/webapps/ROOT”></p>
+<p>Options FollowSymLinks</p>
+<p>AllowOverride None</p>
+<p>Order allow,deny</p>
+<p>Allow from all</p>
+<p>\&lt;/Directory></p>
+<p>httpd.conf文件最后加上</p>
+<p>\&lt;Location /caucho-status></p>
+<p>SetHandler caucho-status</p>
+<p>\&lt;/Location></p>
+<p>保存退出，Windows下访问“ip地址/caucho-status”查看是否整合成功。</p>
+<p><strong>b)</strong>修改完apache之后，同时<strong>修改resin的配置文件</strong>/usr/local/resin/conf/resin.conf</p>
+<p>将以下部分中的root-directory改为你的工程目录与apache的工程目录相同</p>
+<p>\&lt;host id=”” root-directory=”.”></p>
+<p>\&lt;web-app id=”/“ root-directory=”webapps/ROOT”/></p>
+<p>修改端口号（默认8080）、网站路径。（默认网站路径在第300行）</p>
+<p>查找utf-8在注释下添加以下行：</p>
+<p>\&lt;character-encoding>utf-8\&lt;/character-encoding></p>
+<p>修改JVM内存,<br>则只需修改resin.conf,如下配置即可（根据每台机情况配置相应内存大小），例：生产环境设定</p>
+<p>\&lt;jvm-arg>-Xdebug\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-Xmx2048M\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-Xms2048M\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-Xmn256M\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:PermSize=128M\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:MaxPermSize=256M\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-Xss256K\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:SurvivorRatio=1\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+CMSParallelRemarkEnabled\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+UseCMSCompactAtFullCollection\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:CMSFullGCsBeforeCompaction=0\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:ParallelGCThreads=2\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:LargePageSizeInBytes=128M\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+UseFastAccessorMethods\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+UseCMSInitiatingOccupancyOnly\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:CMSInitiatingOccupancyFraction=80\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:SoftRefLRUPolicyMSPerMB=0\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+PrintClassHistogram\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+PrintGCDetails\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+PrintGCTimeStamps\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+PrintHeapAtGC\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:-UseGCOverheadLimit\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-XX:+UseConcMarkSweepGC\&lt;/jvm-arg></p>
+<p>\&lt;jvm-arg>-Xloggc:log/gc.log\&lt;/jvm-arg></p>
+<p>说明:</p>
+<p>(1)J-server -Xms200m -Xmx1024m 其中，-Xms200m<br>表示启动时，初时内存大小，-Xmx1024m</p>
+<p>最大内存占用大小。(注：最大内存设定不能超过物理最大内存的70%)</p>
+<p>查看内存请使用下句：</p>
+<p>free -m</p>
+<p>(2)-XX:MaxNewSize=256m -XX:MaxPermSize=256m 表示：内存的永久保存区域的大小</p>
+<p>(3)-Djava.awt.headless=true 解决在linux/unix验证码图片不能显示的问题。</p>
+<h2 id="八-配置完成，测试"><a href="#八-配置完成，测试" class="headerlink" title="八.配置完成，测试"></a>八.配置完成，测试</h2><p>（1）将测试文件(例如index.jsp)放到/usr/local/resin/webapps/ROOT目录下。</p>
+<p>（2）进入resin目录/usr/local/resin/bin目录下执行./httpd.sh<br>restart命令重启resin服务。</p>
+<p>（3）centos本地机访问<a href="http://127.0.0.1:8080/index.jsp" target="_blank" rel="noopener">http://127.0.0.1:8080/index.jsp</a></p>
+<p>WINDOWS下测试； http://外网IP:8080/index.jsp</p>
+<p>可访问到index.jsp页面，说明resin服务配置正常。</p>
+<p>（4）进入apache目录/usr/local/httpd/bin目录下执行./apachectl<br>restart命令重启apache服务。</p>
+<p>（5）同样访问<a href="http://127.0.0.1/index.jsp" target="_blank" rel="noopener">http://127.0.0.1/index.jsp</a></p>
+<p>WINDOWS下测试； http://外网IP/index.jsp</p>
+<p>此时的端口号为apache的端口号80，发现apache也可以解析jsp文件了，整合成功。</p>
+<h2 id="九-添加到开机启动"><a href="#九-添加到开机启动" class="headerlink" title="九.添加到开机启动"></a>九.添加到开机启动</h2><h3 id="（1）设置resin开机启动"><a href="#（1）设置resin开机启动" class="headerlink" title="（1）设置resin开机启动"></a>（1）设置resin开机启动</h3><p>cp /usr/local/resin/bin/httpd.sh /etc/init.d/resin</p>
+<p>chmod +x /etc/init.d/resin //添加Resin执行权限</p>
+<p>修改脚本 vi /etc/init.d/resin，在头部之下，添加一行</p>
+<p>#!/bin/sh</p>
+<p>#</p>
+<p>此处添加以下行</p>
+<p># chkconfig: 345 85 15</p>
+<p>添加以下HOME路径：</p>
+<p>JAVA_HOME=/usr/java/jdk1.6.0_29</p>
+<p>RESIN_HOME=/usr/local/resin</p>
+<p>在/etc/profile下增加以下行</p>
+<p>RESIN_HOME=/usr/local/resin</p>
+<p>export RESIN_HOME</p>
+<p>保存退出。刷新一下：source /etc/profile</p>
+<p>chkconfig –add resin //添加Resin为系统服务</p>
+<p>chkconfig resin on //设置Resin开机自动启动</p>
+<p>chkconfig //检查是否开启</p>
+<h3 id="（2）设置apache开机启动"><a href="#（2）设置apache开机启动" class="headerlink" title="（2）设置apache开机启动"></a>（2）设置apache开机启动</h3><p>cp /usr/local/httpd/bin/apachectl /etc/init.d/httpd</p>
+<p>vi /etc/init.d/httpd</p>
+<p>编辑，在头部之下，添加一行</p>
+<p>#!/bin/sh</p>
+<p>#</p>
+<p>此处添加以下行，保存退出。</p>
+<p># chkconfig: 345 85 15</p>
+<p>chkconfig –add httpd //添加开机启动</p>
+<p>chkconfig httpd on</p>
+<p>chkconfig //检查是否开启</p>
+<h2 id="十-其他命令说明补充"><a href="#十-其他命令说明补充" class="headerlink" title="十.其他命令说明补充"></a>十.其他命令说明补充</h2><p>补充：删除/usr/local/resin/webapps/resin-doc.war文件，防止漏洞被利用。</p>
+<p>临时启动resin命令/etc/init.d/resin start 或service resin start</p>
+<p>查看状态service resin status</p>
+<p>注：”service 软件名 start/stop”命令，是搜索/etc/init.d/目录下的脚本</p>
+<p>查看服务是否开启: chkconfig</p>
+<p>查看端口是否开启：netstat -ntl</p>
+<p>（netstat 显示网络相关信息：网络连接，路由表，接口状态，masquerade<br>连接，多播成员等）</p>
+<p>安装lrzsz软件：搭配SecureCRT使用的上传下载软件</p>
+<p>yum install lrzsz -y</p>
+<p>rz上传sz下载，默认传输目录在SecureCRT会话里xmodem里设置</p>
+<p>同步时间ntp</p>
+<p>先安装yum install ntp -y</p>
+<p>ntpdate 0.asia.pool.ntp.org</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2018/11/03/JSP_env/" target="_blank" rel="external">https://zeroto.one/2018/11/03/JSP_env/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSP/">JSP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/旧文转换/">旧文转换</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/11/03/LAMP_config/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">旧文系列--LAMP环境源码安装详细步骤</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/11/03/word_to_md/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">word旧文转换md系列</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>

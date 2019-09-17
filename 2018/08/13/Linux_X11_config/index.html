@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2018/08/13/Linux_X11_config/">
+    
+    
+    <title>Linux X11 远程图形显示 | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="X11,chromium,vcxsrv">
+    <meta name="description" content="需求：服务器没有完整的桌面环境, 而某些软件需要图形界面观察效果。维基介绍：X窗口系统（X Window System，也常称为X11或X）是一种以位图方式显示的软件窗口系统环境说明：windows10下显示图形界面, 远程服务器为centos7， windows下远程软件为MobaXterm 或vcxsrv+xshell 或 vcxsrv+pycharm (vcxsrv可以使用Xming代替)附">
+<meta name="keywords" content="X11,chromium,vcxsrv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux X11 远程图形显示">
+<meta property="og:url" content="https://zeroto.one/2018/08/13/Linux_X11_config/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="需求：服务器没有完整的桌面环境, 而某些软件需要图形界面观察效果。维基介绍：X窗口系统（X Window System，也常称为X11或X）是一种以位图方式显示的软件窗口系统环境说明：windows10下显示图形界面, 远程服务器为centos7， windows下远程软件为MobaXterm 或vcxsrv+xshell 或 vcxsrv+pycharm (vcxsrv可以使用Xming代替)附">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://i.loli.net/2018/08/13/5b71a611c4758.png">
+<meta property="og:image" content="https://i.loli.net/2018/08/13/5b71a611c234b.png">
+<meta property="og:image" content="https://i.loli.net/2018/08/13/5b71a61263e04.png">
+<meta property="og:image" content="https://i.loli.net/2018/08/13/5b71a611c1d50.png">
+<meta property="og:image" content="https://i.loli.net/2018/08/13/5b71a6153eb89.png">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux X11 远程图形显示">
+<meta name="twitter:description" content="需求：服务器没有完整的桌面环境, 而某些软件需要图形界面观察效果。维基介绍：X窗口系统（X Window System，也常称为X11或X）是一种以位图方式显示的软件窗口系统环境说明：windows10下显示图形界面, 远程服务器为centos7， windows下远程软件为MobaXterm 或vcxsrv+xshell 或 vcxsrv+pycharm (vcxsrv可以使用Xming代替)附">
+<meta name="twitter:image" content="https://i.loli.net/2018/08/13/5b71a611c4758.png">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Linux X11 远程图形显示</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Linux X11 远程图形显示</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-13T10:15:29.000Z" itemprop="datePublished" class="page-time">
+  2018-08-13
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#准备工作"><span class="post-toc-text">准备工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案一-MobaXterm"><span class="post-toc-text">方案一(MobaXterm)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案二-vcxsrv-amp-xshell"><span class="post-toc-text">方案二(vcxsrv &amp; xshell)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方案三-vcxsrv-amp-pycharm"><span class="post-toc-text">方案三(vcxsrv &amp; pycharm)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#测试显示"><span class="post-toc-text">测试显示</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装字体"><span class="post-toc-text">安装字体</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装chromium浏览器"><span class="post-toc-text">安装chromium浏览器</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-Linux_X11_config" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Linux X11 远程图形显示</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-13 18:15:29" datetime="2018-08-13T10:15:29.000Z" itemprop="datePublished">2018-08-13</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><strong>需求</strong>：服务器没有完整的桌面环境, 而某些软件需要图形界面观察效果。<br><strong>维基介绍</strong>：X窗口系统（X Window System，也常称为X11或X）是一种以位图方式显示的软件窗口系统<br><strong>环境说明</strong>：<br>windows10下显示图形界面, 远程服务器为centos7， windows下远程软件为MobaXterm 或vcxsrv+xshell 或 vcxsrv+pycharm (vcxsrv可以使用Xming代替)<br>附带安装chromium浏览器和字体方法</p>
+<a id="more"></a>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p><strong>安装 X11 转发相关软件</strong></p>
+<pre><code>sudo yum install xorg-x11-xauth xorg-x11-fonts-* xorg-x11-font-utils xorg-x11-fonts-Type1 xclock
+</code></pre><p><strong>启用 X11 Forwarding</strong></p>
+<p><code>sudo vim /etc/ssh/sshd_config</code>, 更改为如下: (只修改 X11UseLocalhost 和 X11Forwarding )</p>
+<pre><code>X11Forwarding yes
+#X11DisplayOffset 10
+#X11UseLocalhost yes
+X11UseLocalhost no
+</code></pre><p><strong>重启 sshd 服务</strong></p>
+<pre><code>sudo systemctl restart sshd.service
+</code></pre><p><strong>查看当前显示变量</strong></p>
+<pre><code>echo $DISPLAY
+</code></pre><p>我这里是连接远程服务器(私网在外层映射到公网), 显示的结果如下, ip与ifconfig里eth0网卡的一样.</p>
+<pre><code>10.140.0.2:10.0
+</code></pre><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2018/08/13/5b71a611c4758.png" alt="DISPLAY设置" title>
+                </div>
+                <div class="image-caption">DISPLAY设置</div>
+            </figure>
+<h2 id="方案一-MobaXterm"><a href="#方案一-MobaXterm" class="headerlink" title="方案一(MobaXterm)"></a>方案一(MobaXterm)</h2><p>MobaXterm一个软件一步到位, 集成x11服务端, linux上的为x11客户端<br>未用过x11的可以先下载MobaXterm便携版用来测试<br><a href="https://mobaxterm.mobatek.net/" target="_blank" rel="noopener">mobaxterm官网</a><br><a href="http://download.mobatek.net/1092018073012523/MobaXterm_Portable_v10.9.zip" target="_blank" rel="noopener">MobaXterm便携版10.9下载地址</a><br><a href="http://download.mobatek.net/1092018073012523/MobaXterm_Installer_v10.9.zip" target="_blank" rel="noopener">[MobaXterm安装版10.9下载地址]</a><br>如果服务器设置正确，X11-forwarding和DISPLAY会有绿色勾，如下图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2018/08/13/5b71a611c234b.png" alt="MobaXterm" title>
+                </div>
+                <div class="image-caption">MobaXterm</div>
+            </figure></p>
+<h2 id="方案二-vcxsrv-amp-xshell"><a href="#方案二-vcxsrv-amp-xshell" class="headerlink" title="方案二(vcxsrv &amp; xshell)"></a>方案二(vcxsrv &amp; xshell)</h2><p>vcxsrv和xshell配合显示图形界面, vcxsrv作为x11服务端, xshell中转图形数据到vcxsrv<br><a href="https://sourceforge.net/projects/vcxsrv/" target="_blank" rel="noopener">VcXsrv Windows X Server下载地址</a></p>
+<p><strong>windows端下载安装vcxsrv</strong><br>第一次运行vcxsrv时使用开始菜单里面的XLaunch来启动, 产生一个初始的配置文件. 对于简单的使用来说, 不需要任何特殊的配置, 一切使用默认即可. 需要记住的是下图中标示出的”Display number”中的数字, 此处使用默认的, 最后一步中的Save configuration可以把这个设置保存为一个文件, 以后每次用这个设置只需运行该文件, 而不用每次都重新配置</p>
+<p>xshell里点文件–&gt;属性–&gt;ssh隧道–&gt;x11转移–&gt;X DISPLAY–&gt;设置为如下(默认的<code>localhost:0.0</code>也可):</p>
+<pre><code>127.0.0.1:0.0
+</code></pre><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2018/08/13/5b71a61263e04.png" alt="xshell设置" title>
+                </div>
+                <div class="image-caption">xshell设置</div>
+            </figure>
+<h2 id="方案三-vcxsrv-amp-pycharm"><a href="#方案三-vcxsrv-amp-pycharm" class="headerlink" title="方案三(vcxsrv &amp; pycharm)"></a>方案三(vcxsrv &amp; pycharm)</h2><p>vcxsrv和pycharm配合显示图形界面, vcxsrv作为x11服务端, pycharm中转图形数据到vcxsrv</p>
+<p><strong>方法一(麻烦,精确控制)</strong><br>Pycharm-&gt;Preferences-&gt;Build, Execution, Deployment-&gt;Console-&gt;Python Console，点击Environment variables后面的…，添加我们刚刚看到的DISPLAY变量</p>
+<p>在run configuration里面还要设置一遍：<br>点击运行按钮左边的下拉三角形-&gt;edit configurations ;<br>选中我们运行的configuration，我这里是test，点右边的Environment variables的…添加一个DISPLAY变量，我这里是localhost:10.0</p>
+<p><strong>方法二(最方便)</strong><br>在linux的全局变量里 <code>/etc/bashrc</code>或者<code>~/.bashrc</code>设置以下就不用在pycharm每个文件run configuration里设置一遍(pycharm里就不用执行上述步骤设置环境变量了)</p>
+<pre><code>export DISPLAY=127.0.0.1:10.0
+</code></pre><h2 id="测试显示"><a href="#测试显示" class="headerlink" title="测试显示"></a>测试显示</h2><p>以下会显示图形数字时钟，如果设置正确：</p>
+<pre><code>xclock
+</code></pre><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2018/08/13/5b71a611c1d50.png" alt="xclock" title>
+                </div>
+                <div class="image-caption">xclock</div>
+            </figure>
+<h2 id="安装字体"><a href="#安装字体" class="headerlink" title="安装字体"></a>安装字体</h2><p>如果使用浏览器等用到字体的软件会显示乱码, 解决办法, 安装英文与中文字体:<br><code>sudo yum -y install dejavu-sans-mono-fonts wqy-zenhei-fonts</code></p>
+<p>如果需要微软雅黑字体或其它指定字体, 请参考以下文章:<br><a href="https://blog.csdn.net/wlwlwlwl015/article/details/51482065" target="_blank" rel="noopener">Linux CentOS 7 安装字体库 &amp; 中文字体</a></p>
+<p>更新字体缓存命令，不输入也可：</p>
+<pre><code>fc-cache -fv
+</code></pre><h2 id="安装chromium浏览器"><a href="#安装chromium浏览器" class="headerlink" title="安装chromium浏览器"></a>安装chromium浏览器</h2><p>(epel源里没有chrome但有chromium)</p>
+<p>安装epel源:</p>
+<pre><code>sudo yum install epel-release
+</code></pre><p>正式安装chromium和chromedriver，chromedriver为selenium要用到的, 不需要可以不装. </p>
+<pre><code>sudo yum -y install chromium chromedriver
+</code></pre><p>启动chromium浏览器的命令为<code>chromium-browser</code>建议设置alias<br>输入命令验证chromedriver安装版本<code>chromedriver</code><br>此处Chromium版本为 57, ChromeDriver版本为 2.37</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://i.loli.net/2018/08/13/5b71a6153eb89.png" alt="chromium" title>
+                </div>
+                <div class="image-caption">chromium</div>
+            </figure>
+<p>浏览器很耗费内存资源, 512m内存服务器会很卡. x11转发方式效率不高, 即使是在局域网内使用也是有卡顿感, 如果是长期大量使用桌面环境可以考虑使用vnc方式代替.</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2018/08/13/Linux_X11_config/" target="_blank" rel="external">https://zeroto.one/2018/08/13/Linux_X11_config/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/X11/">X11</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/chromium/">chromium</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vcxsrv/">vcxsrv</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/10/19/gcp_notes/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">谷歌云平台一周年纪念</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/11/linux_and_windows_boot_setting/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">linux和windows双系统引导设置</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2017/12/24/cmd-off-netbios/">
+    
+    
+    <title>批处理关闭或开启NETBIOS | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="bat,批处理">
+    <meta name="description" content="禁用NETBIOS后，局域网内计算机不可以在地址栏用主机名访问你的主机，更安全。 以下为批处理自动关闭netbios脚本:">
+<meta name="keywords" content="bat,批处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="批处理关闭或开启NETBIOS">
+<meta property="og:url" content="https://zeroto.one/2017/12/24/cmd-off-netbios/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="禁用NETBIOS后，局域网内计算机不可以在地址栏用主机名访问你的主机，更安全。 以下为批处理自动关闭netbios脚本:">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="批处理关闭或开启NETBIOS">
+<meta name="twitter:description" content="禁用NETBIOS后，局域网内计算机不可以在地址栏用主机名访问你的主机，更安全。 以下为批处理自动关闭netbios脚本:">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">批处理关闭或开启NETBIOS</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">批处理关闭或开启NETBIOS</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-12-24T03:58:00.000Z" itemprop="datePublished" class="page-time">
+  2017-12-24
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-cmd-off-netbios" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">批处理关闭或开启NETBIOS</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-12-24 11:58:00" datetime="2017-12-24T03:58:00.000Z" itemprop="datePublished">2017-12-24</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>禁用NETBIOS后，局域网内计算机不可以在地址栏用主机名访问你的主机，更安全。</p>
+<p><strong>以下为批处理自动关闭netbios脚本:</strong><br><a id="more"></a></p>
+<pre><code>@echo off 
+rem off_netbios_Self_Del
+for /L %%a in (1,1,20) do (
+   wmic nicconfig where index=&#39;%%a&#39; call settcpipnetbios 2
+)
+cd /d %~dp0
+  if exist one_time.cmd (
+  del /f /q %0
+  exit
+)
+rename %0 one_time.cmd
+exit
+</code></pre><p><strong>功能:</strong><br>一键关闭netbios，执行完第二次后自己删除自己。</p>
+<p><strong>适用性:</strong>，<br>在win7及win2008测试通过，其它系统没测。</p>
+<p><strong>说明:</strong><br><strong>用法：</strong>复制上述脚本随便起个名，扩展名改为bat或者cmd。最好把文件放到开机启动目录，开机就运行。windows下自启动目录如下：<br><code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup</code></p>
+<p><strong>如何开启NETBIOS?</strong><br>把上述代码第四行最后数字改为1即为开启，改为0即为默认设置，为2时代表关闭（上述代码已默认设为关闭NETBIOS)。</p>
+<p><strong>为何要第二次才删除？</strong><br>如果是新装或者复制了系统，第一次开机是检测并安装网卡设备。如果未安装完网卡就运行完脚本，那脚本就发挥不了作用。</p>
+<p><strong>运行流程：</strong><br>在运行第一次的时候会自动把本脚本重命名为one_time.cmd<br>在第二次运行脚本监测到有one_time.cmd文件后会自我删除。<br>本脚本用for循环20次，每个网卡都尝试关闭NETBIOS,（一般系统有十多个网卡序号）如果不够（不放心）就就把第三行代码由数字20改为30或更多。如果想要查看自己的网卡序号可以在CMD里输入以下命令：<code>wmic nicconfig Get Caption,index</code></p>
+<p><strong>参考文档:</strong><a href="http://www.bathome.net/thread-38925-1-1.html" target="_blank" rel="noopener">批处理如何恢复Netbios</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2017/12/24/cmd-off-netbios/" target="_blank" rel="external">https://zeroto.one/2017/12/24/cmd-off-netbios/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bat/">bat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/批处理/">批处理</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/12/30/rsync/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">同步软件rsync安装配置</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/25/Hexo主题indigo添加来必力评论/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Hexo主题indigo添加来必力评论</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>

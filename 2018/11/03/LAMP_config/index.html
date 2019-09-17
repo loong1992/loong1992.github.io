@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-123261962-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-123261962-1');
+</script>
+<!-- End  - Google Analytics -->
+
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://zeroto.one/2018/11/03/LAMP_config/">
+    
+    
+    <title>旧文系列--LAMP环境源码安装详细步骤 | 从零到壹 | 从入门到入坑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="旧文转换,LAMP">
+    <meta name="description" content="LAMP环境源码安装详细步骤 （CentOS6、Apache2.2、Mysql5.1、PHP5.2) 注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差.">
+<meta name="keywords" content="旧文转换,LAMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="旧文系列--LAMP环境源码安装详细步骤">
+<meta property="og:url" content="https://zeroto.one/2018/11/03/LAMP_config/index.html">
+<meta property="og:site_name" content="从零到壹">
+<meta property="og:description" content="LAMP环境源码安装详细步骤 （CentOS6、Apache2.2、Mysql5.1、PHP5.2) 注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-17T18:22:27.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="旧文系列--LAMP环境源码安装详细步骤">
+<meta name="twitter:description" content="LAMP环境源码安装详细步骤 （CentOS6、Apache2.2、Mysql5.1、PHP5.2) 注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差.">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.6.16">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+  <!-- highlight.js代码高亮主题 css 引入-->
+  <link rel="stylesheet" href="/highlightjs/styles/tomorrow-night-blue.css">
+  <!-- highlight.js代码高亮主题 css 引入-->
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">小龙</h5>
+          <a href="mailto:me@zeroto.one" title="me@zeroto.one" class="mail">me@zeroto.one</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-circle"></i>
+                关于
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">旧文系列--LAMP环境源码安装详细步骤</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">旧文系列--LAMP环境源码安装详细步骤</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-11-03T11:08:50.000Z" itemprop="datePublished" class="page-time">
+  2018-11-03
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一、准备工作"><span class="post-toc-text">一、准备工作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑴安装相关程序库"><span class="post-toc-text">⑴安装相关程序库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑵设置系统"><span class="post-toc-text">⑵设置系统</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#二-安装MySQL"><span class="post-toc-text">二.安装MySQL</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑴下载并安装mysql"><span class="post-toc-text">⑴下载并安装mysql</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑵配置mysql"><span class="post-toc-text">⑵配置mysql</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三-安装apache"><span class="post-toc-text">三.安装apache</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑴下载并安装apache"><span class="post-toc-text">⑴下载并安装apache</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑵设置apache开机启动"><span class="post-toc-text">⑵设置apache开机启动</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#四-apache结合php"><span class="post-toc-text">四.apache结合php</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑴编辑apache的主配置文件"><span class="post-toc-text">⑴编辑apache的主配置文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑵配置Apache的扩展配置文件"><span class="post-toc-text">⑵配置Apache的扩展配置文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#①-配置Apache进程管理"><span class="post-toc-text">①.配置Apache进程管理</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#②-配置Apache虚拟主机"><span class="post-toc-text">②.配置Apache虚拟主机</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#③配置Apache服务器默认设置"><span class="post-toc-text">③配置Apache服务器默认设置</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑶安装配置apache模块"><span class="post-toc-text">⑶安装配置apache模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#①、配置支持中文URL路径"><span class="post-toc-text">①、配置支持中文URL路径</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#②、配置防DDOS攻击模块"><span class="post-toc-text">②、配置防DDOS攻击模块</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#③、配置限制带宽"><span class="post-toc-text">③、配置限制带宽</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#④、mod-proxy代理服务"><span class="post-toc-text">④、mod_proxy代理服务</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#⑤、反向加速-代理加速模块"><span class="post-toc-text">⑤、反向加速/代理加速模块</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#⑥、启用mod-expires模块"><span class="post-toc-text">⑥、启用mod_expires模块</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#⑦、安装设置浏览器缓存模块"><span class="post-toc-text">⑦、安装设置浏览器缓存模块</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#五-安装php"><span class="post-toc-text">五.安装php</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑴-安装php的依赖包文件"><span class="post-toc-text">⑴.安装php的依赖包文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#①-先安装Libmcrypt"><span class="post-toc-text">①.先安装Libmcrypt</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#②-再安装mhash"><span class="post-toc-text">②.再安装mhash</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#③-最后安装mcrypt"><span class="post-toc-text">③.最后安装mcrypt</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑵-正式安装php"><span class="post-toc-text">⑵.正式安装php</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#①-下载php并解压："><span class="post-toc-text">①.下载php并解压：</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#②编译中可能的报错信息"><span class="post-toc-text">②编译中可能的报错信息:</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#③初始化配置文件"><span class="post-toc-text">③初始化配置文件</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#六-PHP模块的安装及最后配置"><span class="post-toc-text">六.PHP模块的安装及最后配置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#⑴php性能优化，安装ZendOptimizer"><span class="post-toc-text">⑴php性能优化，安装ZendOptimizer</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XXX查看确认L-A-M-P环境信息、提升-PHP-安全性"><span class="post-toc-text">XXX查看确认L.A.M.P环境信息、提升 PHP 安全性</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-LAMP_config" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">旧文系列--LAMP环境源码安装详细步骤</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-11-03 19:08:50" datetime="2018-11-03T11:08:50.000Z" itemprop="datePublished">2018-11-03</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>LAMP环境源码安装详细步骤</p>
+<p>（CentOS6、Apache2.2、Mysql5.1、PHP5.2)</p>
+<p><strong>注: 本文由工具直接word转换为md, 没有做代码高亮等格式化处理, 观感较差.</strong></p>
+<a id="more"></a>
+<h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><h3 id="⑴安装相关程序库"><a href="#⑴安装相关程序库" class="headerlink" title="⑴安装相关程序库"></a>⑴安装相关程序库</h3><p>yum install -y ntp libxml2 libxml2-devel openssl openssl-devel curl curl-devel<br>libmcrypt flex bison libmcrypt-devel zlib libpng libpng-devel libjpeg<br>libjpeg-devel libtiff-devel jpeg8 bzip2-devel freetype autoconf automake gd gcc<br>gcc-c++ gcc-g77 ncurses-devel libjpeg libjpeg-devel freetype-devel pam-devel<br>kerne</p>
+<h3 id="⑵设置系统"><a href="#⑵设置系统" class="headerlink" title="⑵设置系统"></a>⑵设置系统</h3><p>同步好时间，使用crontab来定时的同步时间</p>
+<p>vim /etc/crontab或crontab -e 然后加入以下行（每30分钟同步一次）：</p>
+<p>*/30 * * * * ntpdate 0.asia.pool.ntp.org</p>
+<p>防火墙放行</p>
+<p>iptables -L 列出目前防火墙设置</p>
+<p>iptables -F 清空防火墙规则</p>
+<p>删除etc/sysconfig/下iptables和iptables.old文件</p>
+<p>vi /etc/selinux/config</p>
+<p>SELINUX=disabled 关闭系统安全策略（永久，重启生效）</p>
+<p>getenforce 获取目前状态</p>
+<p>setenforce 0 临时改（无需重启）</p>
+<p><strong>3.为防止出现乱码</strong></p>
+<p>i18n是internationalization的缩写，意思指i和n之间有18个字母。/etc/sysconfig/i18n里面存放着系统的区域语言设置，可以使linux系统支持国际化信息显示。</p>
+<p>如果客户系统是繁体中文，也是如此操作。</p>
+<p>vi /etc/sysconfig/i18n</p>
+<p>注释以下句</p>
+<p>#LANG=”en_US.UTF-8”</p>
+<p>#SYSFONT=”latarcyrheb-sun16”</p>
+<p>添加以下句</p>
+<p>LANG=”zh_CN.GB18030”</p>
+<p>LANGUAGE=”zh_CN.GB18030:zh_CN.GB2312:zh_CN”</p>
+<p>SUPPORTED=”zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en”</p>
+<p>SYSFONT=”lat0-sun16”</p>
+<p>编辑系统环境</p>
+<p>vi /etc/profile</p>
+<p>添加export LC_ALL=zh_CN.GB18030</p>
+<p>保存退出，重新载入。</p>
+<p>source /etc/profile</p>
+<h2 id="二-安装MySQL"><a href="#二-安装MySQL" class="headerlink" title="二.安装MySQL"></a>二.安装MySQL</h2><h3 id="⑴下载并安装mysql"><a href="#⑴下载并安装mysql" class="headerlink" title="⑴下载并安装mysql"></a>⑴下载并安装mysql</h3><p>添加mysql用户，添加用户组mysql ，将mysql用户默认组设置为mysql用户组：</p>
+<p>groupadd mysql</p>
+<p>useradd -s /sbin/nologin -g mysql -M mysql</p>
+<p>先下载，后解压mysql，放在/home/soft目录下</p>
+<p>cd /home/soft/mysql-5.1.61</p>
+<p>编译mysql参数:</p>
+<p>./configure –prefix=/usr/local/mysql –localstatedir=/home/db_mysql/data<br>–sysconfdir=/etc –with-charset=utf8 –with-extra-charsets=all<br>–enable-thread-safe-client –with-big-tables –with-ssl –with-embedded-server<br>–enable-local-infile –enable-assembler –with-plugins=innobase<br>–with-plugins=partition –with-plugins=myisammrg<br>–with-unix-socket-path=/usr/local/mysql/mysql.sock –with-low-memory<br>–with-readline</p>
+<p>make</p>
+<p>make install</p>
+<p>若编译失败make clean后再make和make install</p>
+<p>默认不支持innodb存储引擎，其中添加–with-plugins=all可以把innodb加载进来。</p>
+<h3 id="⑵配置mysql"><a href="#⑵配置mysql" class="headerlink" title="⑵配置mysql"></a>⑵配置mysql</h3><p>生成MySQL配置文件</p>
+<p>cp /usr/local/mysql/share/mysql/my-medium.cnf /etc/my.cnf</p>
+<p>vi /etc/my.cnf #修改mysql配置文件</p>
+<p>把该文件改为或加上以下行</p>
+<p>1.[client]</p>
+<p>default-character-set = utf8</p>
+<p>2.[mysqld]</p>
+<p>character-set-server = utf8</p>
+<p>collation-server = utf8_general_ci</p>
+<p>注释掉(加#号）#skip-locking这一行（跳过外部锁定）</p>
+<p>2.更改数据库拥有者，让mysql用户有所有权限</p>
+<p>mkdir -p /home/db_mysql/data</p>
+<p>chown -R mysql:mysql /home/db_mysql/data</p>
+<p>chown -R mysql:mysql /usr/local/mysql</p>
+<p>初始化数据库（创建授权表）：</p>
+<p>/usr/local/mysql/bin/mysql_install_db –user=mysql –datadir=/home/db_mysql/data<br>–basedir=/usr/local/mysql</p>
+<p>把启动脚本加入系统服务项：</p>
+<p>cp /usr/local/mysql/share/mysql/mysql.server /etc/init.d/mysqld</p>
+<p>chown root:root /etc/init.d/mysqld</p>
+<p>chmod 755 /etc/init.d/mysqld</p>
+<p>修改启动脚本</p>
+<p>vim /etc/init.d/mysqld</p>
+<p>需要修改的地方有datadir=/home/db_mysql/data（前面初始化数据库时定义的目录）</p>
+<p>设定开机启动</p>
+<p>chkconfig –level 35 mysqld on</p>
+<p>（levels 35 表示在命令行模式和X Window模式下自动启动）</p>
+<p>启动mysql命令：service mysqld start</p>
+<p>3.设密码：</p>
+<p>创建符号链接ln -s /usr/local/mysql/bin/mysqladmin /usr/bin/</p>
+<p>设置密码命令mysqladmin -u root password ‘a123456’</p>
+<p>上句为给mysql用户root加密码a123456</p>
+<p>4.登录：</p>
+<p>创建符号链接ln -s /usr/local/mysql/bin/mysql /usr/bin/</p>
+<p>登录命令mysql -u root -p</p>
+<p>然后输密码。</p>
+<p>5.退出：\q或exit</p>
+<h2 id="三-安装apache"><a href="#三-安装apache" class="headerlink" title="三.安装apache"></a>三.安装apache</h2><h3 id="⑴下载并安装apache"><a href="#⑴下载并安装apache" class="headerlink" title="⑴下载并安装apache"></a>⑴下载并安装apache</h3><p>安装GCC等组件（如果系统没有安装）</p>
+<p>如果安装apache提示“no acceptable C compiler found in<br>\$PATH”，这是因为系统中没有安装gcc</p>
+<p>yum install -y gcc gcc-c++</p>
+<p>①下载apache，下载地址为：<a href="http://mirror.esocc.com/apache//httpd/httpd-2.2.31.tar.gz" target="_blank" rel="noopener">http://mirror.esocc.com/apache//httpd/httpd-2.2.31.tar.gz</a></p>
+<p>②tar zxvf httpd-2.2.31.tar.gz</p>
+<p>③cd httpd-2.2.31</p>
+<p>④编译</p>
+<p>./configure –prefix=/usr/local/httpd –enable-so –enable-mods-shared=most<br>–with-mpm=worker –with-included-apr –enable-expires=shared<br>–enable-deflate=shared –enable-rewrite=shared –enable-static-support<br>–disable-userdir</p>
+<p>⑤make &amp;&amp; make install</p>
+<p>⑥apache安装完成后，进入/usr/local/httpd/bin/目录下，执行./apachectl<br>start命令启动apache</p>
+<p>⑦centos本机访问<a href="http://127.0.0.1/页面查看apache服务是否安装正常。" target="_blank" rel="noopener">http://127.0.0.1/页面查看apache服务是否安装正常。</a></p>
+<h3 id="⑵设置apache开机启动"><a href="#⑵设置apache开机启动" class="headerlink" title="⑵设置apache开机启动"></a>⑵设置apache开机启动</h3><p>cp /usr/local/httpd/bin/apachectl /etc/init.d/httpd</p>
+<p>vim /etc/init.d/httpd</p>
+<p>编辑，在头部之下，添加一行，找到：</p>
+<p>#!/bin/sh</p>
+<p>#</p>
+<p>此处添加以下行，保存退出。</p>
+<p># chkconfig: 2345 85 15</p>
+<p>chkconfig –add httpd //添加开机启动</p>
+<p>chkconfig httpd on</p>
+<p>chkconfig //检查是否开启</p>
+<h2 id="四-apache结合php"><a href="#四-apache结合php" class="headerlink" title="四.apache结合php"></a>四.apache结合php</h2><h3 id="⑴编辑apache的主配置文件"><a href="#⑴编辑apache的主配置文件" class="headerlink" title="⑴编辑apache的主配置文件"></a>⑴编辑apache的主配置文件</h3><p>vim /usr/local/httpd/conf/httpd.conf</p>
+<p>找到：</p>
+<p>AddType application/x-gzip .gz .tgz</p>
+<p>在该行下面添加：</p>
+<p>AddType application/x-httpd-php .php</p>
+<p>AddType application/x-httpd-php .php3</p>
+<p>AddType application/x-httpd-php .php4</p>
+<p>找到：</p>
+<p>\<ifmodule dir_module\></ifmodule></p>
+<p>DirectoryIndex index.html</p>
+<p>\&lt;/IfModule></p>
+<p>将该行改为</p>
+<p>\<ifmodule dir_module\></ifmodule></p>
+<p>DirectoryIndex index.html index.htm index.php</p>
+<p>\&lt;/IfModule></p>
+<p>以下行修改路径及控制目录和文件的访问授权：如下设为允许所有</p>
+<p>\&lt;Directory “/usr/local/httpd/htdocs”></p>
+<p>Options FollowSymLinks</p>
+<p>AllowOverride None</p>
+<p>Order allow,deny</p>
+<p>Allow from all</p>
+<p>\&lt;/Directory></p>
+<p>找到</p>
+<p>#ServerName <a href="http://www.example.com:80" target="_blank" rel="noopener">www.example.com:80</a></p>
+<p>在该行下面添加</p>
+<p>ServerName localhost:80</p>
+<p>找到：</p>
+<p>#Include conf/extra/httpd-mpm.conf</p>
+<p>#Include conf/extra/httpd-info.conf</p>
+<p>#Include conf/extra/httpd-vhosts.conf</p>
+<p>#Include conf/extra/httpd-default.conf</p>
+<p>去掉前面的“#”号，取消注释。</p>
+<p>注：以上 4<br>个扩展配置文件中的设置请按照相关原则进行合理配置！修改完成后保存退出。</p>
+<h3 id="⑵配置Apache的扩展配置文件"><a href="#⑵配置Apache的扩展配置文件" class="headerlink" title="⑵配置Apache的扩展配置文件"></a>⑵配置Apache的扩展配置文件</h3><p>配置apache的进程管理、默认设置以及虚拟主机</p>
+<h4 id="①-配置Apache进程管理"><a href="#①-配置Apache进程管理" class="headerlink" title="①.配置Apache进程管理"></a>①.配置Apache进程管理</h4><p>查看当前httpd的工作模式，可执行 /usr/local/httpd/bin/apachectl -l</p>
+<p>进程管理模式共有三种：worker模式、prefork模式、Event模式</p>
+<p>配置文件为：/usr/local/httpd/conf/extra/httpd-mpm.conf</p>
+<p>将配置文件中下面一段修改为如下，worker工作模式例子与详解：</p>
+<p>\<ifmodule mpm_worker_module\></ifmodule></p>
+<p>StartServers 2 //启动apache时，首次启动2个进程</p>
+<p>MaxClients 150 //最多支持150个并发的http链接</p>
+<p>MinSpareThreads 25 //最少有25个线程空闲，否则新增加进程或者线程了</p>
+<p>MaxSpareThreads 75 //最多有75个线程空闲，否则就要自动回收多余空闲的线程或者进程</p>
+<p>ThreadsPerChild 25 //启动一个进程时，此进程首先启动25个线程</p>
+<p>MaxRequestsPerChild 1000<br>//允许每个进程在它的生命周期内处理的http最大请求1000.。0为没有限制。（不建议设为0，可能内存溢出）</p>
+<p>\&lt;/IfModule></p>
+<p>以下是<strong>例子</strong>配置</p>
+<p>\<ifmodule mpm_worker_module\></ifmodule></p>
+<p>ServerLimit 50 //最多可以启动50个进程</p>
+<p>ThreadLimit 1000 //每个进程最多可以启动1000个线程</p>
+<p>StartServers 8</p>
+<p>MaxClients 5000</p>
+<p>MinSpareThreads 750</p>
+<p>MaxSpareThreads 2500</p>
+<p>ThreadsPerChild 1000</p>
+<p>MaxRequestsPerChild 20000</p>
+<p>\&lt;/IfModule></p>
+<p><strong>指令说明</strong>（根据每台机的配置，设置对应的参数）：</p>
+<p><strong>StartServers</strong>：设置服务器启动时建立的子进程数量。因为子进程数量动态的取决于负载的轻重,所有一般没有必要调整这个参数。</p>
+<p><strong>MaxClients</strong>：允许同时伺服的最大接入请求数量(最大线程数量)。任何超过MaxClients限制的请求都将进入等候队列。默认值是400，16(ServerLimit)乘以25(ThreadsPerChild)的结果。因此要增加MaxClients的时候，你必须同时增加ServerLimit的值。</p>
+<p><strong>ThreadsPerChild</strong>:每个子进程建立的常驻的执行线程数。默认值是25。子进程在启动时建立这些线程后就不再建立新的线程了。</p>
+<p><strong>MinSpareThreads</strong>:最小空闲线程数,默认值是75。这个MPM将基于整个服务器监视空闲线程数。如果服务器中总的空闲线程数太少，子进程将产生新的空闲线程。</p>
+<p><strong>MaxSpareThreads</strong>:设置最大空闲线程数。默认值是250。这个MPM将基于整个服务器监视空闲线程数。如果服务器中总的空<br>闲线程数太多，子进程将杀死多余的空闲线程。MaxSpareThreads的取值范围是有限制的。Apache将按照如下限制自动修正你设置的<br>值：worker要求其大于等于MinSpareThreads加上ThreadsPerChild的和。</p>
+<p><strong>MaxRequestsPerChild</strong>：设置每个子进程在其生存期内允许伺服的最大请求数量。到达MaxRequestsPerChild的限制后，子进程将会结束。如果MaxRequestsPerChild为0，子进程将永远不会结束。将MaxRequestsPerChild设置成非零值有两个好处：</p>
+<p>1.可以防止(偶然的)内存泄漏无限进行，从而耗尽内存。</p>
+<p>2.给进程一个有限寿命，从而有助于当服务器负载减轻的时候减少活动进程的数量。</p>
+<p>注意对于KeepAlive链接，只有第一个请求会被计数。事实上，它改变了每个子进程限制最大链接数量的行为。</p>
+<p>先计算每一个httpd请求大概占用多少内存，除去系统和其他程序占用的内存后，估计每秒请求数有多少，就可以计算出来了</p>
+<h4 id="②-配置Apache虚拟主机"><a href="#②-配置Apache虚拟主机" class="headerlink" title="②.配置Apache虚拟主机"></a>②.配置Apache虚拟主机</h4><p>配置文件为：/usr/local/httpd/conf/extra/httpd-vhosts.conf</p>
+<p>将配置文件中下面一段修改为相应虚拟主机域名和相应目录，下例为改为<a href="http://www.test.org：" target="_blank" rel="noopener">www.test.org：</a></p>
+<p>\<virtualhost \*:80\></virtualhost></p>
+<p>ServerAdmin webmaster\@dummy-host2.localhost</p>
+<p>DocumentRoot “/home/www/test/“</p>
+<p>ServerName <a href="http://www.test.org" target="_blank" rel="noopener">www.test.org</a></p>
+<p>\&lt;Directory “/home/www/test/“></p>
+<p>Options FollowSymLinks</p>
+<p>AllowOverride All</p>
+<p>Order allow,deny</p>
+<p>Allow from all</p>
+<p>\&lt;/Directory></p>
+<p>\&lt;/VirtualHost></p>
+<p>新建目录（改为上述的虚拟主机目录）</p>
+<p>mkdir -p /home/www/test/</p>
+<p>重启apache服务service httpd restart</p>
+<p>如果想要在centos本机测试，用虚拟主机域名方式浏览，请编辑vi /etc/hosts文件加上：</p>
+<p>127.0.0.1 <a href="http://www.test.org" target="_blank" rel="noopener">www.test.org</a></p>
+<h4 id="③配置Apache服务器默认设置"><a href="#③配置Apache服务器默认设置" class="headerlink" title="③配置Apache服务器默认设置"></a>③配置Apache服务器默认设置</h4><p>vi /usr/local/httpd/conf/extra/httpd-default.conf</p>
+<p># 联机超过 60 秒失败就重试</p>
+<p>Timeout 60</p>
+<p># 开启 KeepAlive</p>
+<p>KeepAlive Off</p>
+<p># 设定同一时间可容许的 KeppAlive 量</p>
+<p>MaxKeepAliveRequests 5000</p>
+<p># KeepAlive 多久要自动 Timeout 掉</p>
+<p>KeepAliveTimeout 3</p>
+<p># 关掉那费时的 DNS 查寻</p>
+<p>HostnameLookups Off</p>
+<p><strong>总结一下：</strong></p>
+<p>　　在内存非常充足的服务器上，不管是否关闭 KeepAlive<br>功能，服务器性能不会有明显变化；</p>
+<p>　　如果服务器内存较少，或者服务器有非常大量的文件系统访问时，或者主要处理动态网页服务，关闭<br>KeepAlive<br>后可以节省很多内存，而节省出来的内存用于文件系统Cache，可以提高文件系统访问的性能，并且系统会更加稳定。</p>
+<p>　　补充：</p>
+<p>　　关于是否应该关闭 KeepAlive<br>选项，我觉得可以基于下面的一个公式来判断。　　在理想的网络连接状况下，系统的<br>Apache 进程数和内存使用可以用如下公式表达：</p>
+<p>HttpdProcessNumber = KeepAliveTimeout * TotalRequestPerSecond /<br>Average(KeepAliveRequests)</p>
+<p>HttpdUsedMemory = HttpdProcessNumber * MemoryPerHttpdProcess</p>
+<p>　　换成中文：</p>
+<p>总Apache进程数 = KeepAliveTimeout * 每秒种HTTP请求数 / 平均KeepAlive请求</p>
+<p>Apache占用内存 = 总Apache进程数 * 平均每进程占用内存数　　需要特别说明的是：</p>
+<p>　　[平均KeepAlive请求] 数，是指每个用户连接上服务器后，持续发出的 HTTP<br>请求数。当 KeepAliveTimeout 等 0 或者 KeepAlive 关闭时，KeepAliveTimeout<br>不参与乘的运算从上面的公式看，如果 [每秒用户请求] 多，[KeepAliveTimeout]<br>的值大，[平均KeepAlive请求] 的值小，都会造成 [Apache进程数] 多和 [内存]<br>多，但是当 [平均KeepAlive请求] 的值越大时，[Apache进程数] 和 [内存]<br>都是趋向于减少的。</p>
+<p>　　基于上面的公式，我们就可以推算出当 平均KeepAlive请求 \&lt;= KeepAliveTimeout<br>时，关闭 KeepAlive 选项是划算的，否则就可以考虑打开。</p>
+<p>Timeout：设置服务器在断定请求失败前等待的秒数。默认值300。</p>
+<p>KeepAlive：设置是否启用HTTP持久链接，On 代表打开，Off<br>代表关闭。如果用于同一页面包含大量静态文件的应用，设置为On，以提高性能；如果用于主要为动态页面的应用，</p>
+<p>设置为Off，以节约内存资源；如果服务器前跑有squid或者其它七层设备，设置为On。</p>
+<p>MaxKeepAliveRequests：限制当启用KeepAlive时，每个连接允许的请求数量。如果将此值设为”0”，将不限制请求的数目。笔者建议将此值设为100-500之间的一个值，以确保最优</p>
+<p>的服务器性能。</p>
+<p>KeepAliveTimeout：设置持久链接中服务器在两次请求之间等待的秒数。对于高负荷服务器来说，KeepAliveTimeout值较大会导致一些性能方面的问题：超时值越大，与空闲客户</p>
+<p>端保持连接的进程就越多。</p>
+<p>UseCanonicalName：配置服务器如何确定它自己的域名，可选值为On | Off |<br>DNS。DNS用于为大量基于IP的虚拟主机支持那些古董级的不提供”Host:”头的浏览器使用。笔者建议</p>
+<p>设置为Off。</p>
+<p>AccessFileName：设置分布式配置文件的名字，默认为.htaccess。如果为某个目录启用了分布式配置文件功能，那么在向客户端返回其中的文档时，服务器将在这个文档所在的各</p>
+<p>级目录中查找此配置文件，因此会带来性能问题，笔者建议关闭分布式配置文件功能。</p>
+<p>ServerTokens：控制服务器回应给客户端的”Server:”应答头是否包含关于服务器操作系统类型和编译进的模块描述信息，同时还控制着<br>ServerSignature指令的显示内容。可选值</p>
+<p>为Full | OS | Minor | Minimal | Major |<br>Prod。笔者建议设置为显示最少信息的Prod。</p>
+<p>ServerSignature：配置服务器生成页面的页脚，可选值为On | Off |<br>EMail。采用On会简单的增加一行关于服务器版本和正在伺服的虚拟主机的ServerName，而EMail设置会额外</p>
+<p>创建一个指向 ServerAdmin的”mailto:”部分。建议使用默认值Off。</p>
+<p>HostnameLookups：设置是否启用对客户端IP的DNS查找，可选值为On | Off |<br>Double。DNS查询会造成明显的时间消耗，建议设置为Off。</p>
+<h3 id="⑶安装配置apache模块"><a href="#⑶安装配置apache模块" class="headerlink" title="⑶安装配置apache模块"></a>⑶安装配置apache模块</h3><p><strong>注：</strong>apache的LoadModule是按顺序加载的，mod_cband（限速）要在mod_proxy（代理）之前。下面部分模块在编译安装apache时就已安装了。</p>
+<h4 id="①、配置支持中文URL路径"><a href="#①、配置支持中文URL路径" class="headerlink" title="①、配置支持中文URL路径"></a>①、配置支持中文URL路径</h4><p>起作用的模块为mod_encoding</p>
+<p><strong>1、先打补丁</strong></p>
+<p>yum install patch -y</p>
+<p># wget <a href="http://webdav.todo.gr.jp/download/mod_encoding-20021209.tar.gz" target="_blank" rel="noopener">http://webdav.todo.gr.jp/download/mod_encoding-20021209.tar.gz</a></p>
+<p># wget<br><a href="http://webdav.todo.gr.jp/download/experimental/mod_encoding.c.apache2.20040616" target="_blank" rel="noopener">http://webdav.todo.gr.jp/download/experimental/mod_encoding.c.apache2.20040616</a></p>
+<p>新版本mod_encoding.c 覆盖</p>
+<p># cp mod_encoding.c.apache2.20040616 mod_encoding-20021209/mod_encoding.c</p>
+<p>这里必须要打一个apache 2.2的补丁。否则make也会出apxs rc=65536 之类的错误。</p>
+<p># wget<br><a href="http://www.aconus.com/\~oyaji/faq/mod_encoding.c-apache2.2-20060520.patch" target="_blank" rel="noopener">http://www.aconus.com/\~oyaji/faq/mod_encoding.c-apache2.2-20060520.patch</a></p>
+<p># cd mod_encoding-20021209</p>
+<p># patch -p0 \&lt; mod_encoding.c-apache2.2-20060520.patch</p>
+<p><strong>2、安装iconv-hook库</strong></p>
+<p># cd mod_encoding-20021209/lib</p>
+<p># ./configure –prefix=/usr</p>
+<p># make</p>
+<p># make install</p>
+<p># ldconfig</p>
+<p><strong>3、生成 mod_encoding的so文件</strong></p>
+<p>./configure –with-apxs=/usr/local/httpd/bin/apxs –with-iconv-hook=/usr/include</p>
+<p>make</p>
+<p>gcc -shared -o mod_encoding.so mod_encoding.o -Wc,-Wall -Llib -liconv_hook</p>
+<p>cp mod_encoding.so /usr/local/httpd/modules</p>
+<p><strong>4、编辑 apache 2.2 配置</strong></p>
+<p>vi /usr/local/httpd/conf/httpd.conf</p>
+<p>加入以下行</p>
+<p>LoadModule encoding_module modules/mod_encoding.so</p>
+<p>\<ifmodule mod_encoding.c\></ifmodule></p>
+<p>EncodingEngine on</p>
+<p>NormalizeUsername on</p>
+<p>SetServerEncoding GBK</p>
+<p>DefaultClientEncoding UTF-8 GBK GB2312</p>
+<p>AddClientEncoding “(Microsoft .* DAV \$)” UTF-8 GBK GB2312</p>
+<p>AddClientEncoding “Microsoft .* DAV” UTF-8 GBK GB2312</p>
+<p>AddClientEncoding “Microsoft-WebDAV*“ UTF-8 GBK GB2312</p>
+<p>\&lt;/IfModule></p>
+<h4 id="②、配置防DDOS攻击模块"><a href="#②、配置防DDOS攻击模块" class="headerlink" title="②、配置防DDOS攻击模块"></a>②、配置防DDOS攻击模块</h4><p>下载mod_evasive</p>
+<p><a href="http://www.nuclearelephant.com/projects/mod_evasive" target="_blank" rel="noopener">http://www.nuclearelephant.com/projects/mod_evasive</a></p>
+<p>#tar zxvf mod_evasive_1.10.1.tar.gz</p>
+<p>#cd mod_evasive</p>
+<p>#/usr/local/httpd/bin/apxs -i -a -c mod_evasive20.c</p>
+<p>打开 httpd.conf文件，查看是否有以下行，如没有则加上去</p>
+<p>LoadModule evasive20_module modules/mod_evasive20.so</p>
+<p>并加入</p>
+<p>\<ifmodule mod_evasive20.c\></ifmodule></p>
+<p>DOSHashTableSize 3097</p>
+<p>DOSPageCount 2</p>
+<p>DOSSiteCount 50</p>
+<p>DOSPageInterval 1</p>
+<p>DOSSiteInterval 1</p>
+<p>DOSBlockingPeriod 10</p>
+<p>\&lt;/IfModule></p>
+<h4 id="③、配置限制带宽"><a href="#③、配置限制带宽" class="headerlink" title="③、配置限制带宽"></a>③、配置限制带宽</h4><p>模块名为mod-cband</p>
+<p>#tar xzvf mod-cband-0.9.6.1.tgz</p>
+<p>#cd mod-cband-0.9.6.1</p>
+<p>./configure –with-apxs=/usr/local/httpd/bin/apxs //指定一下<br>apxs的路径，否则可能会出错</p>
+<p>#make</p>
+<p>#make install</p>
+<p>安装成功后提示：</p>
+<p>chmod 755 /usr/local/httpd/modules/mod_cband.so</p>
+<p>打开/usr/local/httpd/conf/httpd.conf</p>
+<p>LoadModule cband_module modules/mod_cband.so已经添加。</p>
+<p>安装模块到此完毕，以下是配置</p>
+<p>然后在虚拟主机配置文件中，按以下方法修改：</p>
+<p>\<virtualhost \*:80\></virtualhost></p>
+<p>ServerName <a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a></p>
+<p>ServerAdmin webmaster\@example.com</p>
+<p>DocumentRoot /home/www/html/example_com</p>
+<p>CBandLimit 100M //限制虚拟主机总访问带宽为100Mb。</p>
+<p>CBandSpeed 1024 10 30<br>//CBandSpeed限定总的最大链接速度为1024kb,最多并发处理10个请求每秒和30个链接每秒</p>
+<p>CBandRemoteSpeed 20kb/s 5 3 //<br>CBandRemoteSpeed限定一个用户最多能有20kb的链接速度,最多并发5个请求每秒和3个链接每秒</p>
+<p>CBandPeriod 4W //设定多久对所记录的全局访问带宽进行重设（清零）。4W=4 weeks<br>4周（一个月）</p>
+<p>\&lt;Location /cband-status></p>
+<p>SetHandler cband-status</p>
+<p>\&lt;/Location></p>
+<p>#<br>开启了mod_cband的实时监测功能，可以通过<a href="http://server_name/cband-status进行直观的观测。（全局监测）" target="_blank" rel="noopener">http://server_name/cband-status进行直观的观测。（全局监测）</a></p>
+<p>\&lt;Location /cband-status-me></p>
+<p>SetHandler cband-status-me</p>
+<p>\&lt;/Location></p>
+<p>#<br>开启了mod_cband的实时监测功能，可以通过<a href="http://server_name/cband-status-me进行直观的观测。（单一监测）" target="_blank" rel="noopener">http://server_name/cband-status-me进行直观的观测。（单一监测）</a></p>
+<p>\&lt;/VirtualHost></p>
+<h4 id="④、mod-proxy代理服务"><a href="#④、mod-proxy代理服务" class="headerlink" title="④、mod_proxy代理服务"></a>④、mod_proxy代理服务</h4><p>apache提供了mod_proxy模块用于提供代理服务，能够支持的包括正向代理、反向代理、透明代理、缓存、负载均衡，HTTP代理、FTP代理、SSL代理等若干强大的功能。</p>
+<p>通常我们使用的比较多的，是正向代理。也就是在浏览器的网络连接属性框中，填写上一个代理服务器的ip和端口，即可通过代理服务器中转，去浏览网页。</p>
+<p>如果apache没有安装proxy模块，可以不用重新编译，就能添加模块。</p>
+<p>cd /home/soft/httpd-2.2.31/modules/proxy</p>
+<p>/usr/local/httpd/bin/apxs -c -i mod_proxy.c proxy_util.c (ps<br>必须2个c一起编译，不然会报错) /usr/local/httpd/bin/apxs -c -i mod_proxy_http.c<br>proxy_util.c</p>
+<p>vi /usr/local/httpd/conf/httpd.conf</p>
+<p>添加以下行</p>
+<p>LoadModule proxy_module modules/mod_proxy.so</p>
+<p>LoadModule proxy_http_module modules/mod_proxy_http.so</p>
+<p><strong>这里只要求安装模块，如果没有设置代理的要求，先不用配置。</strong></p>
+<p><strong>配置正向代理:</strong></p>
+<p>首先在apache上启用mod_proxy模块，需要注意的是，如果在apache-2.2上，则还需要加载名为mod_proxy_http的模块。因为2.2系列把代理功能都拆分成N个小模块了。打开apache的conf(虚拟主机方式或全局配置)，加入如下几行：（全局配置）</p>
+<p>ProxyRequests On</p>
+<p>ProxyVia On</p>
+<p>\<proxy \*\></proxy></p>
+<p>Order deny,allow</p>
+<p>Deny from all</p>
+<p>Allow from internal.example.com</p>
+<p>\&lt;/Proxy></p>
+<p>保存退出，重启apache服务：service httpd restart<br>现在即可在浏览器的网络连接属性框中，填写上your_apache_server_ip的ip地址，端口是80，开始用代理了。<br>使用apache提供的代理，也可以加身份验证，或者设置ACL来限制客户端来源等。这些配置就和普通的apache站点配置一样。</p>
+<p>注：使用正向代理时严格控制访问权限(使用ProxyRequests指令)是非常重要的。否则你的代理会被客户端利用来访问其它服务器并且隐藏客户端的真实身份。这不仅对您的网络有威胁，对整个因特网来说也同样如此。当使用反向代理(在”ProxyRequests<br>Off”条件下使用ProxyPass指令)的时候访问控制要相对宽松，因为客户端只能连接你配置的特定主机。</p>
+<p><strong>配置反向代理:</strong></p>
+<p>如从某地访问google太慢，但是机房服务器上很快，则可在服务器上设置反向代理连接到google，也就是把google映射到服务器上来访问。然后新建一个网站，即创建一个标准的配置段。这里我们将站点/google目录设置为google的反向代理。在这段里边，加入下边一内容：</p>
+<p>ProxyRequests Off</p>
+<p>\<proxy \*\></proxy></p>
+<p>Order deny,allow</p>
+<p>Allow from all</p>
+<p>\&lt;/Proxy></p>
+<p>ProxyPass /google <a href="http://www.google.com/" target="_blank" rel="noopener">http://www.google.com/</a><br>//前面可以直接访问（80）后面代理的（82）</p>
+<p>ProxyPassReverse /google <a href="http://www.google.com/" target="_blank" rel="noopener">http://www.google.com/</a></p>
+<p>保存退出，重启apache。ProxyPass与ProxyPassReverse的内容总是一样，ProxyPassReverse是重定向~~~~</p>
+<p>现在即可使用浏览器来访问我的网站的/google目录。当打开这个目录的时候，会发现页面是google。点击google的下级页面，都可以正常的打开访问，而此时浏览器中的代理服务器并未设置任何内容——这就是反向代理。</p>
+<h4 id="⑤、反向加速-代理加速模块"><a href="#⑤、反向加速-代理加速模块" class="headerlink" title="⑤、反向加速/代理加速模块"></a>⑤、反向加速/代理加速模块</h4><p>模块名为mod_extract_forwarded</p>
+<p>tar zxvf mod_extract_forwarded2-0.1.tar.gz</p>
+<p>cd extract_forwarded</p>
+<p>/usr/local/httpd/bin/apxs -c -i -a mod_extract_forwarded2.c</p>
+<p>这个全自动安装,会在apache的httpd.conf自动添加</p>
+<p>LoadModule extract_forwarded_module modules/mod_extract_forwarded2.c</p>
+<p>默认这时还不工作，还需要配置 (其中 127.0.0.1 为代理加速配置)</p>
+<p>MEForder refuse,accept</p>
+<p>MEFrefuse all</p>
+<p>MEFaccept 127.0.0.1</p>
+<p>#MEFaddenv on</p>
+<p>#default on</p>
+<p>#MEFdebug on</p>
+<p>#default off</p>
+<p><strong>以下为测试</strong></p>
+<p>MEFdebug 设为 on 的话</p>
+<p>cd /var/log/httpd/</p>
+<p>tail error_log</p>
+<p>可以看到很多具体信息</p>
+<p>MEF: phase:post read request, initial substituted 1.1.1.1 for 127.0.0.1,<br><a href="http://2.2.2.2/file.html" target="_blank" rel="noopener">http://2.2.2.2/file.html</a></p>
+<p>MEF: phase:URI translate, already done, NFA required, <a href="http://2.2.2.2/file.html" target="_blank" rel="noopener">http://2.2.2.2/file.html</a></p>
+<p>MEF: phase:access check, already done, NFA required, <a href="http://2.2.2.2/file.html" target="_blank" rel="noopener">http://2.2.2.2/file.html</a></p>
+<p>MEF: phase:cleanup initial, undo spoof substituted 127.0.0.1 for 1.1.1.1</p>
+<p>1.1.1.1 为远端客户机</p>
+<p>2.2.2.2 为服务器 用ip连接 当然域名也可以</p>
+<p>如果不通过代理加速直接连的话</p>
+<p>MEF: phase:post read request, no FORWARDED-FOR header, /favicon.ico</p>
+<p>MEF: phase:URI translate, no FORWARDED-FOR header, /favicon.ico</p>
+<p>MEF: phase:access check, no FORWARDED-FOR header, /favicon.ico</p>
+<h4 id="⑥、启用mod-expires模块"><a href="#⑥、启用mod-expires模块" class="headerlink" title="⑥、启用mod_expires模块"></a>⑥、启用mod_expires模块</h4><p>mod_expires可以减少10%左右的重复请求，让重复的用户对指定的页面请求结果都CACHE在本地，根本不向服务器发出请求。</p>
+<p>在使用之前,首先要确认一下”mod_expires”模组是否有启用。编辑Apache的”httpd.conf”配置文件。搜索找到这行，取消注释:</p>
+<p>#LoadModule expires_module modules/mod_expires.so</p>
+<h4 id="⑦、安装设置浏览器缓存模块"><a href="#⑦、安装设置浏览器缓存模块" class="headerlink" title="⑦、安装设置浏览器缓存模块"></a>⑦、安装设置浏览器缓存模块</h4><p><strong>mod_headers模块</strong>：该模块用来设置浏览器缓存文件，如果安装apache时没有安装mod_headers模块，使用以下apache安装加载</p>
+<p>1、进入httpd源码包下的目录modules/metadata。</p>
+<p>cd /home/soft/httpd-2.2.20/modules/metadata</p>
+<p>2、执行安装命令。</p>
+<p>/usr/local/httpd/bin/apxs -i -a -c mod_headers.c</p>
+<p><strong>如果要启用</strong>在httpd.conf 中设置：</p>
+<p>LoadModule headers_module modules/mod_headers.so</p>
+<p>\<ifmodule mod_headers.c\></ifmodule></p>
+<p>Header add MS-Author-Via “DAV”</p>
+<p>\&lt;/IfModule></p>
+<p><strong>上述所有模块安装配置完毕后重启apache</strong></p>
+<h2 id="五-安装php"><a href="#五-安装php" class="headerlink" title="五.安装php"></a>五.安装php</h2><h3 id="⑴-安装php的依赖包文件"><a href="#⑴-安装php的依赖包文件" class="headerlink" title="⑴.安装php的依赖包文件"></a>⑴.安装php的依赖包文件</h3><p>如果没安装，会报错：configure: error: mcrypt.h not found. Please reinstall<br>libmcrypt</p>
+<p>源码编译安装，去<a href="http://www.sourceforge.net下载Libmcrypt,mhash,mcrypt安装包" target="_blank" rel="noopener">http://www.sourceforge.net下载Libmcrypt,mhash,mcrypt安装包</a></p>
+<p>libmcrypt(libmcrypt-2.5.8.tar.gz )：</p>
+<p>mcrypt(mcrypt-2.6.8.tar.gz ):</p>
+<p>mhash(mhash-0.9.9.9.tar.gz ):</p>
+<h4 id="①-先安装Libmcrypt"><a href="#①-先安装Libmcrypt" class="headerlink" title="①.先安装Libmcrypt"></a>①.先安装Libmcrypt</h4><p>tar -zxvf libmcrypt-2.5.8.tar.gz</p>
+<p>cd libmcrypt-2.5.8</p>
+<p>./configure</p>
+<p>make</p>
+<p>make install 说明：libmcript默认安装在/usr/local</p>
+<h4 id="②-再安装mhash"><a href="#②-再安装mhash" class="headerlink" title="②.再安装mhash"></a>②.再安装mhash</h4><p>tar -zxvf mhash-0.9.9.9.tar.gz</p>
+<p>cd mhash-0.9.9.9</p>
+<p>./configure</p>
+<p>make</p>
+<p>make install</p>
+<h4 id="③-最后安装mcrypt"><a href="#③-最后安装mcrypt" class="headerlink" title="③.最后安装mcrypt"></a>③.最后安装mcrypt</h4><p>tar -zxvf mcrypt-2.6.8.tar.gz</p>
+<p>cd mcrypt-2.6.8</p>
+<p>./configure</p>
+<p>make</p>
+<p>make install</p>
+<p>可能还是提示错误，以下解决方法，先</p>
+<p>ln -s /usr/local/bin/libmcrypt-config /usr/bin/libmcrypt-config</p>
+<p>再编译mcrypt</p>
+<p>如果错误，可能还是变量的问题，解决方法如下：运行</p>
+<p>export LD_LIBRARY_PATH=/usr/local/lib: LD_LIBRARY_PATH</p>
+<p>然后make &amp;&amp; make install</p>
+<p>完成</p>
+<h3 id="⑵-正式安装php"><a href="#⑵-正式安装php" class="headerlink" title="⑵.正式安装php"></a>⑵.正式安装php</h3><h4 id="①-下载php并解压："><a href="#①-下载php并解压：" class="headerlink" title="①.下载php并解压："></a>①.下载php并解压：</h4><p>tar zxf php-5.2.13.tar.gz</p>
+<p>cd php-5.2.13</p>
+<p>配置编译参数:</p>
+<p>./configure –prefix=/usr/local/php –with-apxs2=/usr/local/httpd/bin/apxs<br>–with-gd –with-config-file-path=/usr/local/php/etc/<br>–with-mysql=/usr/local/mysql –with-mysqli=/usr/local/mysql/bin/mysql_config<br>–with-iconv-dir=/usr/local –with-freetype-dir –with-jpeg-dir –with-png-dir<br>–with-zlib –with-libxml-dir –enable-xml –disable-rpath –enable-discard-path<br>–enable-dafe-mode –enable-bcmath –enable-shmop –enable-sysvsem<br>–enable-inline-optimization –with-curl –with-curlwrappers –enable-mbregex<br>–enable-mbstring –with-mcrypt –with-gld –enable-gd-native-ttf –with-openssl<br>–with-mhash –enable-pcntl –enable-sockets –enable-zip –enable-soap<br>–enable-inline-optimization</p>
+<p>make</p>
+<p>make test (可跳过这一句)</p>
+<p>make install</p>
+<h4 id="②编译中可能的报错信息"><a href="#②编译中可能的报错信息" class="headerlink" title="②编译中可能的报错信息:"></a>②编译中可能的报错信息:</h4><p>configure:error:libjpeg.(a|so) not found</p>
+<p>Configure: error: libpng.(also) not found</p>
+<p><strong>方法一</strong>：更改Linux的系统共享库搜索路径配置文件vi /etc/ld.so.conf</p>
+<p>加入以下行</p>
+<p>/usr/lib64</p>
+<p>/usr/lib</p>
+<p>/usr/local/lib</p>
+<p>/usr/local/lib64</p>
+<p>/lib64</p>
+<p>/lib</p>
+<p>修改了ld.so.conf后要重新运行一下ldconfig</p>
+<p><strong>方法二</strong>：创建符号链接：</p>
+<p>ln -s /usr/lib64/libjpeg.so /usr/lib/</p>
+<p>ln -s /usr/lib64/libpng.so /usr/lib/</p>
+<p><strong>方法三</strong>：手动复制文件(不推荐）</p>
+<p>因为是64位系统,可能系统找不到库文件,所以只能手动复制个</p>
+<p>\cp -frp /usr/lib64/libjpeg.* /usr/lib/</p>
+<p>这样就可以把error:libjpeg.(a|so) not found解决</p>
+<p>Configure: error: libpng.(also) not found.的解决办法:</p>
+<p>\cp -frp /usr/lib64/libpng* /usr/lib/</p>
+<p>好了,这样就不会出错了.</p>
+<h4 id="③初始化配置文件"><a href="#③初始化配置文件" class="headerlink" title="③初始化配置文件"></a>③初始化配置文件</h4><p>复制源码包里php.ini文件到/usr/local/php/etc/目录</p>
+<p>cp /home/soft/php-5.2.13/php.ini-dist /usr/local/php/etc/php.ini</p>
+<p>创建符号链接，令任何目录都可以使用php -v命令</p>
+<p>ln -s /usr/local/php/bin/* /usr/bin/</p>
+<p>保存退出，php安装完成。</p>
+<h2 id="六-PHP模块的安装及最后配置"><a href="#六-PHP模块的安装及最后配置" class="headerlink" title="六.PHP模块的安装及最后配置"></a>六.PHP模块的安装及最后配置</h2><h3 id="⑴php性能优化，安装ZendOptimizer"><a href="#⑴php性能优化，安装ZendOptimizer" class="headerlink" title="⑴php性能优化，安装ZendOptimizer"></a>⑴php性能优化，安装ZendOptimizer</h3><p>该模块只适用于PHP</p>
+<p>tar zxvf ZendOptimizer-3.3.3-linux-glibc23-x86_64.tar.gz</p>
+<p>cd ZendOptimizer-3.3.3-linux-glibc23-x86_64</p>
+<p>./install</p>
+<p>根据提示，输入Zend安装路径/usr/local/Zend(默认)</p>
+<p>php.ini文件目录/usr/local/php/etc/</p>
+<p>apache的apachectl文件目录/usr/local/httpd/bin/apachectl</p>
+<p>然后重启apache,退出zend安装程序。</p>
+<h3 id="XXX查看确认L-A-M-P环境信息、提升-PHP-安全性"><a href="#XXX查看确认L-A-M-P环境信息、提升-PHP-安全性" class="headerlink" title="XXX查看确认L.A.M.P环境信息、提升 PHP 安全性"></a>XXX查看确认L.A.M.P环境信息、提升 PHP 安全性</h3><p>在网站根目录放置 phpinfo.php 脚本，检查phpinfo中的各项信息是否正确。</p>
+<p>phpinfo.php文件添加以下几行</p>
+<p>\&lt;?php</p>
+<p>phpinfo();</p>
+<p>?></p>
+<p>确认 PHP 能够正常工作后，在 php.ini 中进行设置提升 PHP<br>安全性（禁用相关不使用的功能）。</p>
+<p>vi /usr/local/php/etc/php.ini</p>
+<p>找到：</p>
+<p>disable_functions =</p>
+<p>设置为如下(注：要用到的功能不要添加到下面）：</p>
+<p>phpinfo,passthru,exec,system,chroot,scandir,chgrp,chown,shell_exec,proc_open,proc_get_status,ini_alter,ini_alter,ini_restore,dl,pfsockopen,openlog,syslog,readlink,symlink,popepassthru,stream_socket_server</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+
+        
+        如非注明转载，均为本文原创或编译，转载请注明出处：<br>本文链接：<a href="/2018/11/03/LAMP_config/" target="_blank" rel="external">https://zeroto.one/2018/11/03/LAMP_config/</a>
+        
+    </div>
+    <footer>
+        <a href="https://zeroto.one">
+            <img src="/img/avatar.jpg" alt="小龙">
+            小龙
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LAMP/">LAMP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/旧文转换/">旧文转换</a></li></ul>
+
+
+            
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/04/21/wps_skip_login_macOS/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> 上一页</div>
+        <h4 class="title">WPS Office for Mac 免登录使用方法</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/11/03/JSP_env/" id="post-next" class="post-nav-link">
+        <div class="tips">下一页 <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">旧文系列--JDK Resin Apache 配置</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+<section class="comments" id="comments">
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_shortname = 'zerotoone';
+    lazyScripts.push('//' + disqus_shortname + '.disqus.com/embed.js')
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>从零到壹 &copy; 2017 - 2019</span>
+            <span>
+                
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: false, REWARD: false };
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.6.16"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.6.16" async></script>
+
+
+
+
+
+
+
+
+
+
+  <!-- highlight.js代码高亮主题 script 引入-->
+  <script src="/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- highlight.js代码高亮主题 script 引入-->
+</body>
+</html>
